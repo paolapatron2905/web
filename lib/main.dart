@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
             ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 2, 115, 167)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Come cola mingui'),
+      home: const MyHomePage(title: 'Flutter Demo Home Page 5677777777'),
     );
   }
 }
@@ -107,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'Come cola cada vez que presiones el botón:',
+              'You have pushed the button this many times:',
             ),
             Text(
               '$_counter',
