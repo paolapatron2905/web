@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page 567'),
+      home: const MyHomePage(title: 'Flutter Demo Home Page 5677777777'),
     );
   }
 }
