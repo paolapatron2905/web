@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 
-class Appbar extends StatelessWidget implements PreferredSizeWidget {
+class Custom_Appbar extends StatelessWidget implements PreferredSizeWidget {
   final String titulo;
-  final Color color;
+  final Color colorNew;
 
-  const Appbar({
+  const Custom_Appbar({
     super.key,
     required this.titulo,
-    required this.color,
+    required this.colorNew,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(titulo),
-      backgroundColor: color,
+      backgroundColor: colorNew,
+      elevation: 30,
     );
   }
 

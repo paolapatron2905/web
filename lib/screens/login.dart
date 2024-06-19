@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inventario/constants/appbar.dart';
+import 'package:inventario/constants/custom_appbar.dart';
 import 'package:inventario/constants/custom_drawer.dart';
 
 class Login extends StatelessWidget {
@@ -8,8 +8,8 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Appbar(titulo: 'Iniciar Sesión', color: Colors.teal),
-      drawer: CustomDrawer(),
+      appBar: Custom_Appbar(titulo: 'Iniciar Sesión', colorNew: Colors.teal),
+      drawer: Custom_Drawer(),
     );
   }
 }
