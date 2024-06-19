@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventario/screens/ejemplo.dart';
 import 'package:get/get.dart';
+import 'package:inventario/screens/login.dart';
 import 'package:inventario/screens/otroarchivo.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       getPages: [
         GetPage(name: '/', page: () => Ejemplo()),
-        GetPage(name: '/Otro', page: () => OtroEjemplo()),
+        GetPage(name: '/login', page: () => Login()),
       ],
       debugShowCheckedModeBanner: false,
       theme: ThemeData(useMaterial3: true),
