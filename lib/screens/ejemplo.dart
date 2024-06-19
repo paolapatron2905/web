@@ -11,7 +11,7 @@ class Ejemplo extends StatelessWidget {
       appBar: Appbar(titulo: 'Ejemplo', color: Colors.pink),
       drawer: CustomDrawer(),
       body: Column(
-        children: [Text('asddee')],
+        children: [Text('asdd')],
       ),
     );
   }
