@@ -54,6 +54,13 @@ class CustomDrawer extends StatelessWidget {
                 Get.toNamed('/OtroResponsivo');
               },
             ),
+            ListTile(
+              trailing: Icon(Icons.login_outlined),
+              title: Text('Iniciar Sesión'),
+              onTap: () {
+                Get.toNamed('/login');
+              },
+            ),
             Spacer(),
             Divider(),
             ListTile(
