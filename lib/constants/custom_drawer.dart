@@ -28,12 +28,12 @@ class Custom_Drawer extends StatelessWidget {
                 ),
                 child: Stack(
                   children: [
-                    Positioned.fill(
+                    /* Positioned.fill(
                       child: Image.asset(
                         'assets/images/logo.png',
                         fit: BoxFit.cover,
                       ),
-                    ),
+                    ), */
                     Positioned.fill(
                       child: Container(
                         color: Colors.black54,
