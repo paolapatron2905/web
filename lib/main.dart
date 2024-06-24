@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:inventario/screens/ejemplo.dart';
 import 'package:get/get.dart';
-import 'package:inventario/screens/otroarchivo.dart';
+import 'package:inventario/screens/login.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
@@ -20,12 +19,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Prueba',
-      //home: Plantilla(),
+      title: 'Inicia Sesión',
       initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => Ejemplo()),
-        GetPage(name: '/Otro', page: () => OtroEjemplo()),
+        GetPage(name: '/', page: () => Login()),
+        /* GetPage(name: '/login', page: () => ), */
       ],
       debugShowCheckedModeBanner: false,
       theme: ThemeData(useMaterial3: true),
