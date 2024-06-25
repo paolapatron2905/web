@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventario/screens/form_productos.dart';
 import 'package:inventario/screens/login.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
   await Supabase.initialize(
-    url: 'https://zdshwmpzzpcdbfhmrbgh.supabase.co',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpkc2h3bXB6enBjZGJmaG1yYmdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTgzNzkwNDEsImV4cCI6MjAzMzk1NTA0MX0.raI9WJZeb98R2Px3mGnzTugBUQOt9srnAq97oPMVY5c',
+    url: 'https://cakpxhdvkbqsemsrujcy.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNha3B4aGR2a2Jxc2Vtc3J1amN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTkyNTU3MDIsImV4cCI6MjAzNDgzMTcwMn0.SFbWH45-7hsMkbgD991s351NZMMnrG8OPEyyoPhU5bo',
   );
-
   runApp(MyApp());
 }
+        
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       getPages: [
         GetPage(name: '/', page: () => Login()),
+        GetPage(name: '/form_productos', page: () => Productos()),
         /* GetPage(name: '/login', page: () => ), */
       ],
       debugShowCheckedModeBanner: false,
