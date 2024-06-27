@@ -17,7 +17,8 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Custom_Appbar(titulo: 'Iniciar Sesión', colorNew: Colors.green),
+      appBar:
+          Custom_Appbar(titulo_pag: 'Iniciar Sesión', colorNew: Colors.green),
       drawer: Custom_Drawer(),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -51,8 +52,19 @@ class _LoginState extends State<Login> {
                           width: 100.0,
                         ),
                       ),
-                      SizedBox(height: 50.0),
+                      SizedBox(height: 30.0),
 
+                      Text(
+                        'Iniciar Sesión',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 30.0),
+                      
                       /* Form Text Correo/Usuario */
                       TextFormField(
                         minLines: 1,

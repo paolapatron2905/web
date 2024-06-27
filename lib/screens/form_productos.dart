@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventario/constants/custom_appbar.dart';
 import 'package:inventario/constants/custom_drawer.dart';
-import 'package:get/get.dart';
+/* import 'package:get/get.dart'; */
 
 
 class Productos extends StatefulWidget {
@@ -36,7 +36,7 @@ class _ProductosState extends State<Productos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Custom_Appbar(titulo: 'Iniciar Sesión', colorNew: Colors.green),
+      appBar: Custom_Appbar(titulo_pag: 'Iniciar Sesión', colorNew: Colors.green),
       drawer: Custom_Drawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -64,7 +64,7 @@ class _ProductosState extends State<Productos> {
                   return null;
                 },
               ),
-               TextFormField(
+              TextFormField(
                 controller: _descripcionController,
                 decoration: InputDecoration(labelText: 'Precio'),
                 validator: (value) {
@@ -73,7 +73,8 @@ class _ProductosState extends State<Productos> {
                   }
                   return null;
                 },
-              ), TextFormField(
+              ), 
+              TextFormField(
                 controller: _descripcionController,
                 decoration: InputDecoration(labelText: 'Stock'),
                 validator: (value) {
@@ -82,7 +83,8 @@ class _ProductosState extends State<Productos> {
                   }
                   return null;
                 },
-              ), TextFormField(
+              ), 
+              TextFormField(
                 controller: _descripcionController,
                 decoration: InputDecoration(labelText: 'Unidad'),
                 validator: (value) {
@@ -91,7 +93,8 @@ class _ProductosState extends State<Productos> {
                   }
                   return null;
                 },
-              ), TextFormField(
+              ), 
+              TextFormField(
                 controller: _descripcionController,
                 decoration: InputDecoration(labelText: 'Categoria'),
                 validator: (value) {
