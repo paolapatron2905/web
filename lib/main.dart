@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventario/screens/categoria.dart';
+import 'package:inventario/screens/home.dart';
 import 'package:inventario/screens/login.dart';
+import 'package:inventario/screens/proveedor.dart';
+import 'package:inventario/screens/select.dart';
+import 'package:inventario/screens/tabla.dart';
+import 'package:inventario/screens/usuarios.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
@@ -23,6 +29,12 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       getPages: [
         GetPage(name: '/', page: () => Login()),
+        GetPage(name: '/tabla', page: () => Ejemplo()),
+        GetPage(name: '/NuevaCategoria', page: () => InsertarCategoria()),
+        GetPage(name: '/NuevoProveedor', page: () => InsertarProveedor()),
+        GetPage(name: '/Select', page: () => Select()),
+        GetPage(name: '/Usuario', page: () => InsertarUsuario()),
+        GetPage(name: '/Home', page: () => Home()),
         /* GetPage(name: '/login', page: () => ), */
       ],
       debugShowCheckedModeBanner: false,
