@@ -3,7 +3,6 @@ import 'package:inventario/constants/custom_appbar.dart';
 import 'package:inventario/constants/custom_drawer.dart';
 /* import 'package:get/get.dart'; */
 
-
 class Productos extends StatefulWidget {
   const Productos({super.key});
 
@@ -36,10 +35,11 @@ class _ProductosState extends State<Productos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Custom_Appbar(titulo_pag: 'Formulario de Productos', colorNew: Colors.green),
+      appBar: Custom_Appbar(
+          titulo_pag: 'Formulario de Productos', colorNew: Colors.green),
       drawer: Custom_Drawer(),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -73,7 +73,7 @@ class _ProductosState extends State<Productos> {
                   }
                   return null;
                 },
-              ), 
+              ),
               TextFormField(
                 controller: _descripcionController,
                 decoration: InputDecoration(labelText: 'Stock'),
@@ -83,7 +83,7 @@ class _ProductosState extends State<Productos> {
                   }
                   return null;
                 },
-              ), 
+              ),
               TextFormField(
                 controller: _descripcionController,
                 decoration: InputDecoration(labelText: 'Unidad'),
@@ -93,7 +93,7 @@ class _ProductosState extends State<Productos> {
                   }
                   return null;
                 },
-              ), 
+              ),
               TextFormField(
                 controller: _descripcionController,
                 decoration: InputDecoration(labelText: 'Categoria'),
@@ -117,8 +117,8 @@ class _ProductosState extends State<Productos> {
   }
 }
 
-void main() {
+/* void main() {
   runApp(MaterialApp(
     home: Productos(),
   ));
-}
+} */
