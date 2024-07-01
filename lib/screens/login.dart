@@ -27,8 +27,8 @@ class _LoginState extends State<Login> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                width: 600.0,
-                height: 610.0,
+                width: 590.0,
+                height: 600.0,
                 decoration: BoxDecoration(
                   color: Colors.green[300]!.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(10.0),
