@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 /* import 'package:flutter/widgets.dart'; */
 import 'package:inventario/constants/custom_appbar.dart';
 import 'package:inventario/constants/custom_drawer.dart';
+import 'package:flutter/gestures.dart';
+/* import 'dart:ui'; */
 import 'package:get/get.dart';
 
 class Login extends StatefulWidget {
@@ -13,12 +15,14 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool ocultarTexto = true;
+  Color colorPag = Color.fromARGB(255, 136, 247, 25);
+  Color containerColor = Colors.green[300]!.withOpacity(0.3);
+  Color letterColor = Colors.lightGreen;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          Custom_Appbar(titulo_pag: 'Iniciar Sesión', colorNew: Colors.green),
+      appBar: Custom_Appbar(titulo_pag: 'Iniciar Sesión', colorNew: colorPag),
       drawer: Custom_Drawer(),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -30,7 +34,7 @@ class _LoginState extends State<Login> {
                 width: 590.0,
                 height: 600.0,
                 decoration: BoxDecoration(
-                  color: Colors.green[300]!.withOpacity(0.3),
+                  color: containerColor,
                   borderRadius: BorderRadius.circular(10.0),
                   boxShadow: [
                     BoxShadow(
@@ -52,7 +56,7 @@ class _LoginState extends State<Login> {
                           width: 100.0,
                         ),
                       ),
-                      SizedBox(height: 30.0),
+                      SizedBox(height: 60.0),
                       Text(
                         'Iniciar Sesión',
                         textAlign: TextAlign.center,
@@ -101,7 +105,7 @@ class _LoginState extends State<Login> {
                           ),
                           hintText: 'Contraseña',
                           labelText: 'Contraseña',
-                          suffixIcon: IconButton(
+                          prefixIcon: IconButton(
                             icon: Icon(
                               ocultarTexto
                                   ? Icons.visibility
@@ -128,7 +132,7 @@ class _LoginState extends State<Login> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 20.0),
+                      SizedBox(height: 40.0),
 
                       /* Boton Iniciar Sesión */
                       ElevatedButton(
@@ -148,7 +152,45 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20.0),
+                      SizedBox(height: 60.0),
+
+                      // Texto interactivo para registrarse o cambiar la contraseña
+                      RichText(
+                        text: TextSpan(
+                          text: '¿No tienes cuenta? ',
+                          style: TextStyle(color: Colors.black),
+                          children: [
+                            TextSpan(
+                              text: 'Regístrate',
+                              style: TextStyle(
+                                color: letterColor,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  // Navegar a la pantalla de registro
+                                  Get.toNamed('/registro');
+                                },
+                            ),
+                            TextSpan(
+                              text: ' u ',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            TextSpan(
+                              text: '¿olvidaste tu contraseña?',
+                              style: TextStyle(
+                                color: letterColor,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  // Navegar a la pantalla de recuperación de contraseña
+                                  Get.toNamed('/recuperar_contrasena');
+                                },
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      //aqui termina
                     ],
                   ),
                 ),
