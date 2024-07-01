@@ -8,6 +8,7 @@ import 'package:inventario/screens/select.dart';
 import 'package:inventario/screens/tabla.dart';
 import 'package:inventario/screens/usuarios.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:inventario/screens/form_productos.dart';
 
 Future<void> main() async {
   await Supabase.initialize(
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/Select', page: () => Select()),
         GetPage(name: '/Usuario', page: () => InsertarUsuario()),
         GetPage(name: '/Home', page: () => Home()),
+        GetPage(name: '/productos', page: () => Productos())
         /* GetPage(name: '/login', page: () => ), */
       ],
       debugShowCheckedModeBanner: false,

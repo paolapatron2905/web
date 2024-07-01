@@ -18,19 +18,32 @@ class Custom_Drawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: SafeArea(
-        child: Column(
+        child: ListView(
+          padding: EdgeInsets.zero,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20),
                 topRight: Radius.circular(20),
               ),
+              /* child: Image.asset(
+                'assets/images/logo.png',
+                height: 100,
+                width: 100,
+              ),
+             */
               child: DrawerHeader(
                 decoration: BoxDecoration(
                   color: Colors.teal,
                 ),
                 child: Stack(
                   children: [
+                    /* Positioned.fill(
+                      child: Image.asset(
+                        'assets/images/logo.png',
+                        fit: BoxFit.cover,
+                      ),
+                    ), */
                     Positioned.fill(
                       child: Container(
                         color: Colors.black54,
@@ -50,7 +63,15 @@ class Custom_Drawer extends StatelessWidget {
                 ),
               ),
             ),
-            // Mostrar opciones basadas en el tipo de usuario
+            ListTile(
+              trailing: Icon(Icons.login_outlined),
+              title: Text('Iniciar Sesión'),
+              onTap: () {
+                Get.toNamed('/login');
+              },
+            ),
+            Spacer(),
+            Divider(),
             if (usuario.tipoUsuario == 1)
               ListTile(
                 leading: Icon(Icons.admin_panel_settings),
@@ -67,12 +88,23 @@ class Custom_Drawer extends StatelessWidget {
                   // Lógica para opciones de usuario
                 },
               ),
+
+            //Boton de Formulario de productos
+            ListTile(
+              trailing: Icon(Icons.production_quantity_limits_outlined),
+              title: Text('Productos'),
+              onTap: () {
+                Get.toNamed('/productos');
+              },
+            ),
             Spacer(),
             Divider(),
             ListTile(
               leading: Icon(Icons.logout_outlined),
               title: Text('Exit'),
-              onTap: _cerrarSesion, // Llamada a la función de cerrar sesión
+              onTap: () {
+                //funcion vacía
+              },
             ),
           ],
         ),
