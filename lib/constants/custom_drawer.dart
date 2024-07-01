@@ -102,9 +102,7 @@ class Custom_Drawer extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.logout_outlined),
               title: Text('Exit'),
-              onTap: () {
-                //funcion vacía
-              },
+              onTap: _cerrarSesion, // Llamada a la función de cerrar sesión
             ),
           ],
         ),
