@@ -24,7 +24,7 @@ class Home extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              'Tipo de Usuario: ${usuario.tipoUsuario}',
+              'Tipo de Usuario 1: ${usuario.tipoUsuario}',
               style: TextStyle(fontSize: 18),
             ),
             // Aquí puedes agregar más widgets o lógica según sea necesario

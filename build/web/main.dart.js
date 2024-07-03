@@ -91981,7 +91981,7 @@ A.tH.prototype={
 H(a){var s,r=null
 $.bl()
 s=t.IG.a($.e0().to.c)
-return A.qE(new A.jN("Home",B.bJ,r),new A.bU(B.e_,A.fh(A.b([A.bn("Bienvenido, "+s.a,r,r,r,A.et(r,r,r,r,r,r,r,r,r,r,r,24,r,r,B.da,r,r,!0,r,r,r,r,r,r,r,r),r,r),A.dW(r,10,r),A.bn("Tipo de Usuario: "+s.b,r,r,r,A.et(r,r,r,r,r,r,r,r,r,r,r,18,r,r,r,r,r,!0,r,r,r,r,r,r,r,r),r,r)],t.p),B.iQ,B.ak,B.aM),r),new A.mS(s,r))}}
+return A.qE(new A.jN("Home",B.bJ,r),new A.bU(B.e_,A.fh(A.b([A.bn("Bienvenido, "+s.a,r,r,r,A.et(r,r,r,r,r,r,r,r,r,r,r,24,r,r,B.da,r,r,!0,r,r,r,r,r,r,r,r),r,r),A.dW(r,10,r),A.bn("Tipo de Usuario 1: "+s.b,r,r,r,A.et(r,r,r,r,r,r,r,r,r,r,r,18,r,r,r,r,r,!0,r,r,r,r,r,r,r,r),r,r)],t.p),B.iQ,B.ak,B.aM),r),new A.mS(s,r))}}
 A.pU.prototype={
 ah(){var s,r=$.dz().b
 r===$&&A.a()
