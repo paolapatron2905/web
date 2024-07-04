@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventario/screens/form_productos.dart';
+import 'package:inventario/screens/producto_proveedor.dart';
+import 'package:inventario/screens/productos.dart';
 import 'package:inventario/screens/login.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
 
 Future<void> main() async {
   await Supabase.initialize(
@@ -23,7 +25,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       getPages: [
         GetPage(name: '/', page: () => Login()),
-        GetPage(name: '/form_productos', page: () => Productos()),
+        GetPage(name: '/productos', page: () => Productos()),
+        GetPage(name: '/producto_proveedor', page: () => ProductoProveedor())
         /* GetPage(name: '/login', page: () => ), */
       ],
       debugShowCheckedModeBanner: false,
