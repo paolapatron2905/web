@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventario/models/usuario.dart'; // Importar la clase Usuario
 
 class Custom_Drawer extends StatelessWidget {
-  const Custom_Drawer({super.key});
+  final Usuario usuario; // Agregar un argumento para el usuario
+
+  const Custom_Drawer({super.key, required this.usuario});
+
+  void _cerrarSesion() {
+    // Aquí puedes limpiar cualquier dato de sesión almacenado localmente
+
+    // Redirigir al usuario a la pantalla de inicio de sesión
+    Get.offAllNamed('/login');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,12 +72,37 @@ class Custom_Drawer extends StatelessWidget {
             ),
             Spacer(),
             Divider(),
+            if (usuario.tipoUsuario == 1)
+              ListTile(
+                leading: Icon(Icons.admin_panel_settings),
+                title: Text('Opciones de Administrador'),
+                onTap: () {
+                  // Lógica para opciones de administrador
+                },
+              )
+            else if (usuario.tipoUsuario == 2)
+              ListTile(
+                leading: Icon(Icons.person),
+                title: Text('Opciones para Usuario'),
+                onTap: () {
+                  // Lógica para opciones de usuario
+                },
+              ),
+
+            //Boton de Formulario de productos
+            ListTile(
+              trailing: Icon(Icons.production_quantity_limits_outlined),
+              title: Text('Productos'),
+              onTap: () {
+                Get.toNamed('/productos');
+              },
+            ),
+            Spacer(),
+            Divider(),
             ListTile(
               leading: Icon(Icons.logout_outlined),
               title: Text('Exit'),
-              onTap: () {
-                //funcion vacía
-              },
+              onTap: _cerrarSesion, // Llamada a la función de cerrar sesión
             ),
           ],
         ),
