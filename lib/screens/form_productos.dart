@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:inventario/constants/custom_appbar.dart';
 import 'package:inventario/constants/custom_drawer.dart';
-/* import 'package:get/get.dart'; */
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:get/get.dart';
 
 class Productos extends StatefulWidget {
   const Productos({super.key});
@@ -11,24 +12,77 @@ class Productos extends StatefulWidget {
 }
 
 class _ProductosState extends State<Productos> {
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController _nom_prodController = TextEditingController();
-  final TextEditingController _descripcionController = TextEditingController();
-  final TextEditingController _precioController = TextEditingController();
-  final TextEditingController _stockController = TextEditingController();
-  final TextEditingController _fk_unidadController = TextEditingController();
-  final TextEditingController _fk_categoriaController = TextEditingController();
+  final form_key = GlobalKey<FormState>();
+  final supabase = Supabase.instance.client;
 
-  void _submitForm() {
-    if (_formKey.currentState?.validate() ?? false) {
-      // Handle form submission
-      print("Form Submitted");
-      print("Producto: ${_nom_prodController.text}");
-      print("Descripcion: ${_descripcionController.text}");
-      print("Precio: ${_precioController.text}");
-      print("Stock: ${_stockController.text}");
-      print("Unidad: ${_fk_unidadController.text}");
-      print("Categoria: ${_fk_categoriaController.text}");
+  final nomprod_Controller = TextEditingController();
+  final descripcion_Controller = TextEditingController();
+  final precio_Controller = TextEditingController();
+  final stock_Controller = TextEditingController();
+  final stockminimo_Controller = TextEditingController();
+  List tiposUnidades = [];
+  var idUnidad;
+  List tiposCategorias = [];
+  var idCategoria;
+  bool guardando = false;
+
+  traerUnidad() async {
+    try {
+      tiposUnidades = await supabase.from('unidad').select();
+      print('----------------------');
+      print(tiposUnidades);
+
+      setState(() {});
+    } catch (e) {
+      print(e);
+      Get.snackbar('Error', 'Hay un error al traer los datos de unidad',
+          backgroundColor: Colors.red, colorText: Colors.white);
+    }
+  }
+
+  traerCategoria() async {
+    try {
+      tiposCategorias = await supabase.from('categoria').select();
+      print('----------------------');
+      print(tiposCategorias);
+
+      setState(() {});
+    } catch (e) {
+      print(e);
+      Get.snackbar('Error', 'Hay un error al traer los datos de categoría',
+          backgroundColor: Colors.red, colorText: Colors.white);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    print('-----------------');
+    traerUnidad();
+    traerCategoria();
+  }
+
+  guardarProducto() async {
+    try {
+      await supabase.from('producto').insert({
+        'nom_prod': nomprod_Controller.text,
+        'precio': precio_Controller.text,
+        'stock': stock_Controller.text,
+        'estatus': 'Activo',
+        'stock_minimo': stockminimo_Controller.text,
+        'descripcion': descripcion_Controller.text,
+        'unidad_id': idUnidad,
+        'categoria_id': idCategoria
+      });
+      Get.snackbar('Guardado', 'Producto Guardado');
+    } catch (e) {
+      print(e);
+      Get.snackbar('Error', 'No se pudo guardar',
+          backgroundColor: Colors.blueGrey, colorText: Colors.white);
+    } finally {
+      setState(() {
+        guardando = false;
+      });
     }
   }
 
@@ -36,17 +90,22 @@ class _ProductosState extends State<Productos> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Custom_Appbar(
-          titulo: 'Formulario de productos', colorNew: Colors.green),
+        titulo: 'Formulario de Productos',
+        colorNew: Colors.green,
+      ),
       //drawer: Custom_Drawer(),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
-          key: _formKey,
+          key: form_key,
           child: Column(
             children: [
               TextFormField(
-                controller: _nom_prodController,
-                decoration: InputDecoration(labelText: 'Producto'),
+                controller: nomprod_Controller,
+                decoration: InputDecoration(
+                  labelText: 'Producto',
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Ingresa el nombre del producto';
@@ -54,9 +113,13 @@ class _ProductosState extends State<Productos> {
                   return null;
                 },
               ),
+              SizedBox(height: 16.0),
               TextFormField(
-                controller: _descripcionController,
-                decoration: InputDecoration(labelText: 'Descripcion'),
+                controller: descripcion_Controller,
+                decoration: InputDecoration(
+                  labelText: 'Descripcion',
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Ingresa la descripción del producto';
@@ -64,9 +127,14 @@ class _ProductosState extends State<Productos> {
                   return null;
                 },
               ),
+              SizedBox(height: 16.0),
               TextFormField(
-                controller: _descripcionController,
-                decoration: InputDecoration(labelText: 'Precio'),
+                controller: precio_Controller,
+                decoration: InputDecoration(
+                  labelText: 'Precio',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Ingresa el precio del producto';
@@ -74,9 +142,14 @@ class _ProductosState extends State<Productos> {
                   return null;
                 },
               ),
+              SizedBox(height: 16.0),
               TextFormField(
-                controller: _descripcionController,
-                decoration: InputDecoration(labelText: 'Stock'),
+                controller: stock_Controller,
+                decoration: InputDecoration(
+                  labelText: 'Stock',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Ingresa el stock del producto';
@@ -84,30 +157,86 @@ class _ProductosState extends State<Productos> {
                   return null;
                 },
               ),
-              TextFormField(
-                controller: _descripcionController,
-                decoration: InputDecoration(labelText: 'Unidad'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Ingresa la unidad de medida del producto';
-                  }
-                  return null;
+              SizedBox(height: 16.0),
+              DropdownButtonFormField(
+                decoration: InputDecoration(
+                  labelText: 'Unidad',
+                  border: OutlineInputBorder(),
+                ),
+                hint: Text('Selecciona una unidad'),
+                icon: Icon(Icons.arrow_drop_down),
+                isExpanded: true,
+                menuMaxHeight: 500,
+                value: idUnidad,
+                items: tiposUnidades
+                    .map((e) => DropdownMenuItem(
+                          value: e['id'],
+                          child: Text(e['nom_unidad']),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  print(value);
+                  setState(() {
+                    idUnidad = value;
+                  });
                 },
               ),
+              SizedBox(height: 16.0),
+              DropdownButtonFormField(
+                decoration: InputDecoration(
+                  labelText: 'Categoría',
+                  border: OutlineInputBorder(),
+                ),
+                hint: Text('Selecciona una categoria'),
+                icon: Icon(Icons.arrow_drop_down),
+                isExpanded: true,
+                menuMaxHeight: 500,
+                value: idCategoria,
+                items: tiposCategorias
+                    .map((e) => DropdownMenuItem(
+                          value: e['id'],
+                          child: Text(e['nom_cat']),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  print(value);
+                  setState(() {
+                    idCategoria = value;
+                  });
+                },
+              ),
+              SizedBox(height: 16.0),
               TextFormField(
-                controller: _descripcionController,
-                decoration: InputDecoration(labelText: 'Categoria'),
+                controller: stockminimo_Controller,
+                decoration: InputDecoration(
+                  labelText: 'Stock Minimo',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Ingresa la categoria del producto';
+                    return 'Ingresa el stock minímo del producto';
                   }
                   return null;
                 },
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: _submitForm,
-                child: Text('Enviar'),
+                onPressed: guardando
+                    ? null
+                    : () {
+                        if (form_key.currentState!.validate()) {
+                          print('Guardado');
+                          setState(() {
+                            guardando = true;
+                          });
+                          guardarProducto();
+                        } else {
+                          print(
+                              'No se ha podido guardar el registro del producto');
+                        }
+                      },
+                child: Text(guardando ? 'Guardando' : 'Guardar'),
               ),
             ],
           ),
@@ -116,9 +245,3 @@ class _ProductosState extends State<Productos> {
     );
   }
 }
-
-/* void main() {
-  runApp(MaterialApp(
-    home: Productos(),
-  ));
-} */

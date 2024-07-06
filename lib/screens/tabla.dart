@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inventario/constants/custom_drawer.dart';
 import 'package:inventario/constants/custom_appbar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:inventario/models/usuario.dart'; // Importar la clase Usuario
+//import 'package:inventario/models/usuario.dart'; // Importar la clase Usuario
 import 'package:get/get.dart';
 
 class Ejemplo extends StatefulWidget {
@@ -11,14 +11,14 @@ class Ejemplo extends StatefulWidget {
 }
 
 class _EjemploState extends State<Ejemplo> {
-  final usuario = Get.arguments as Usuario;
+  //final usuario = Get.arguments as Usuario;
   final List<Map<String, dynamic>> products = [
     {
       'producto': 'Producto 1',
       'unidad': 'Kg',
       'descripción': 'Descripción del Producto 1',
       'precio': 10.0,
-      'stock': 50,
+      'stock': 5,
       'stock_minimo': 10,
       'categoria': 'Jardín',
       'proveedor': 'Proveedor A',
@@ -198,7 +198,7 @@ class _EjemploState extends State<Ejemplo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Custom_Appbar(titulo: 'Inventario', colorNew: Colors.green),
-      drawer: Custom_Drawer(usuario: usuario),
+      //drawer: Custom_Drawer(usuario: usuario),
       body: Column(
         children: [
           Padding(
