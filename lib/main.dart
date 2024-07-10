@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventario/screens/form_producto.dart';
 import 'package:inventario/screens/form_productos.dart';
 import 'package:inventario/screens/login.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(name: '/', page: () => Login()),
         GetPage(name: '/productos', page: () => Productos()),
+        GetPage(name: '/productos_1', page: () => Productos_1()),
         /* GetPage(name: '/login', page: () => ), */
       ],
       debugShowCheckedModeBanner: false,

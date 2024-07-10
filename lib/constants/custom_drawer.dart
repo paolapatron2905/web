@@ -72,6 +72,15 @@ class Custom_Drawer extends StatelessWidget {
               },
             ),
             Spacer(),
+            //Boton de Formulario de productos 1
+            ListTile(
+              trailing: Icon(Icons.production_quantity_limits_outlined),
+              title: Text('Productos'),
+              onTap: () {
+                Get.toNamed('/productos_1');
+              },
+            ),
+            Spacer(),
             Divider(),
             ListTile(
               leading: Icon(Icons.logout_outlined),

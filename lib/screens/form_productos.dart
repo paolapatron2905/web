@@ -3,14 +3,14 @@ import 'package:inventario/constants/custom_appbar.dart';
 import 'package:inventario/constants/custom_drawer.dart';
 /* import 'package:get/get.dart'; */
 
-class Productos extends StatefulWidget {
-  const Productos({super.key});
+class Productos_1 extends StatefulWidget {
+  const Productos_1({super.key});
 
   @override
-  State<Productos> createState() => _ProductosState();
+  State<Productos_1> createState() => _ProductosState();
 }
 
-class _ProductosState extends State<Productos> {
+class _ProductosState extends State<Productos_1> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nom_prodController = TextEditingController();
   final TextEditingController _descripcionController = TextEditingController();
