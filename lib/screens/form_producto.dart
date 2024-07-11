@@ -84,8 +84,8 @@ class _ProductosState extends State<Productos> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Custom_Appbar(
-          titulo_pag: 'Formulario de Productos', colorNew: Colors.green),
-      drawer: Custom_Drawer(),
+          titulo: 'Formulario de Productos', colorNew: Colors.green),
+      /* drawer: Custom_Drawer(usuario: ,), */
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
