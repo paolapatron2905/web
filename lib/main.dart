@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventario/screens/form_producto.dart';
+import 'package:inventario/screens/categoria.dart';
+import 'package:inventario/screens/empresa.dart';
 import 'package:inventario/screens/form_productos.dart';
+import 'package:inventario/screens/home.dart';
 import 'package:inventario/screens/login.dart';
+import 'package:inventario/screens/producto_proveedor.dart';
+import 'package:inventario/screens/proveedor.dart';
+import 'package:inventario/screens/select.dart';
+import 'package:inventario/screens/tabla.dart';
+import 'package:inventario/screens/usuarios.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
@@ -20,12 +27,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Inicia Sesión',
+      title: 'Inventario',
       initialRoute: '/',
       getPages: [
         GetPage(name: '/', page: () => Login()),
+        GetPage(name: '/tabla', page: () => Ejemplo()),
+        GetPage(name: '/NuevaCategoria', page: () => InsertarCategoria()),
+        GetPage(name: '/NuevaEmpresa', page: () => InsertarEmpresa()),
+        GetPage(name: '/Select', page: () => Select()),
+        GetPage(name: '/Usuario', page: () => InsertarUsuario()),
+        GetPage(name: '/Home', page: () => Home()),
         GetPage(name: '/productos', page: () => Productos()),
-        GetPage(name: '/productos_1', page: () => Productos_1()),
+        GetPage(name: '/NuevoProveedor', page: () => InsertarProveedor()),
+        GetPage(name: '/ProductoProveedor', page: () => ProductoProveedor()),
         /* GetPage(name: '/login', page: () => ), */
       ],
       debugShowCheckedModeBanner: false,
