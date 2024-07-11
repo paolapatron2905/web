@@ -12,15 +12,26 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool ocultarTexto = true;
+  bool cargando = true;
   final supabase = Supabase.instance.client;
   final formularioKey = GlobalKey<FormState>();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    /* validarUsuario(); */
+  }
+
   validarUsuario() async {
     if (!formularioKey.currentState!.validate()) {
       return;
     }
+
+    setState(() {
+      cargando = true;
+    });
 
     try {
       final response = await supabase
