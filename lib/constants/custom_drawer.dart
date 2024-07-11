@@ -63,16 +63,9 @@ class Custom_Drawer extends StatelessWidget {
                 ),
               ),
             ),
-            ListTile(
-              trailing: Icon(Icons.login_outlined),
-              title: Text('Iniciar Sesión'),
-              onTap: () {
-                Get.toNamed('/login');
-              },
-            ),
             Spacer(),
             Divider(),
-            if (usuario.tipoUsuario == 1)
+            if (usuario.tipoUsuario == 3)
               ListTile(
                 leading: Icon(Icons.admin_panel_settings),
                 title: Text('Opciones de Administrador'),
@@ -94,10 +87,33 @@ class Custom_Drawer extends StatelessWidget {
               trailing: Icon(Icons.production_quantity_limits_outlined),
               title: Text('Productos'),
               onTap: () {
-                Get.toNamed('/productos');
+                Get.toNamed('/tabla');
               },
             ),
             Spacer(),
+            ListTile(
+              trailing: Icon(Icons.person),
+              title: Text('Usuarios'),
+              onTap: () {
+                Get.toNamed('/Usuario');
+              },
+            ),
+            Spacer(),
+            ListTile(
+              trailing: Icon(Icons.add),
+              title: Text('Categorias'),
+              onTap: () {
+                Get.toNamed('/NuevaCategoria');
+              },
+            ),
+            Spacer(),
+            ListTile(
+              trailing: Icon(Icons.agriculture),
+              title: Text('Proveedores'),
+              onTap: () {
+                Get.toNamed('/NuevoProveedor');
+              },
+            ),
             Divider(),
             ListTile(
               leading: Icon(Icons.logout_outlined),

@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventario/screens/categoria.dart';
+import 'package:inventario/screens/empresa.dart';
+import 'package:inventario/screens/form_productos.dart';
 import 'package:inventario/screens/home.dart';
 import 'package:inventario/screens/login.dart';
+import 'package:inventario/screens/producto_proveedor.dart';
 import 'package:inventario/screens/proveedor.dart';
 import 'package:inventario/screens/select.dart';
 import 'package:inventario/screens/tabla.dart';
 import 'package:inventario/screens/usuarios.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:inventario/screens/form_productos.dart';
 
 Future<void> main() async {
   await Supabase.initialize(
-    url: 'https://zdshwmpzzpcdbfhmrbgh.supabase.co',
+    url: 'https://cakpxhdvkbqsemsrujcy.supabase.co',
     anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpkc2h3bXB6enBjZGJmaG1yYmdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTgzNzkwNDEsImV4cCI6MjAzMzk1NTA0MX0.raI9WJZeb98R2Px3mGnzTugBUQOt9srnAq97oPMVY5c',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNha3B4aGR2a2Jxc2Vtc3J1amN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTkyNTU3MDIsImV4cCI6MjAzNDgzMTcwMn0.SFbWH45-7hsMkbgD991s351NZMMnrG8OPEyyoPhU5bo',
   );
-
   runApp(MyApp());
 }
 
@@ -26,17 +27,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Inicia Sesión',
+      title: 'Inventario',
       initialRoute: '/',
       getPages: [
         GetPage(name: '/', page: () => Login()),
         GetPage(name: '/tabla', page: () => Ejemplo()),
         GetPage(name: '/NuevaCategoria', page: () => InsertarCategoria()),
-        GetPage(name: '/NuevoProveedor', page: () => InsertarProveedor()),
+        GetPage(name: '/NuevaEmpresa', page: () => InsertarEmpresa()),
         GetPage(name: '/Select', page: () => Select()),
         GetPage(name: '/Usuario', page: () => InsertarUsuario()),
         GetPage(name: '/Home', page: () => Home()),
-        GetPage(name: '/productos', page: () => Productos())
+        GetPage(name: '/productos', page: () => Productos()),
+        GetPage(name: '/NuevoProveedor', page: () => InsertarProveedor()),
+        GetPage(name: '/ProductoProveedor', page: () => ProductoProveedor()),
         /* GetPage(name: '/login', page: () => ), */
       ],
       debugShowCheckedModeBanner: false,
