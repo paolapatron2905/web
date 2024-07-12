@@ -20,6 +20,12 @@ class _LoginState extends State<Login> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    /* validarUsuario(); */
+  }
+
   validarUsuario() async {
     setState(() {
       verificar = true;
