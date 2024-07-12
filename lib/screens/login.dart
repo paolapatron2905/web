@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventario/constants/custom_drawer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:inventario/models/usuario.dart';
 
@@ -11,16 +12,24 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final usuario = Get.arguments as Usuario;
   bool ocultarTexto = true;
+  bool verificar = false;
   final supabase = Supabase.instance.client;
   final formularioKey = GlobalKey<FormState>();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    /* validarUsuario(); */
+  }
+
   validarUsuario() async {
-    if (!formularioKey.currentState!.validate()) {
-      return;
-    }
+    setState(() {
+      verificar = true;
+    });
 
     try {
       final response = await supabase
@@ -29,6 +38,15 @@ class _LoginState extends State<Login> {
           .eq('username', usernameController.text)
           .eq('pass', passwordController.text)
           .single();
+
+      /// Aqui estuve moviendo por que no me deja ver las demás vistas :'(
+      /*   String? username = Get.parameters['username'];
+      String? password = Get.parameters['password'];
+      print('.-.-..-..-.-.-..-.-.-.');
+      print(username);
+      if (username == usernameController || password == passwordController) {
+        Get.offNamed('/Home');
+      } */
 
       if (response != null) {
         final data = response;
@@ -43,14 +61,20 @@ class _LoginState extends State<Login> {
             backgroundColor: Colors.red, colorText: Colors.white);
       }
     } catch (e) {
+      print(e);
       Get.snackbar('Error', 'Hubo un error al iniciar sesión',
           backgroundColor: Colors.red, colorText: Colors.white);
+    } finally {
+      setState(() {
+        verificar = false;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Custom_Drawer(usuario: usuario),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Center(
@@ -155,11 +179,18 @@ class _LoginState extends State<Login> {
 
                         /* Boton Iniciar Sesión */
                         ElevatedButton(
-                          onPressed: () {
-                            validarUsuario();
-                          },
+                          onPressed: verificar
+                              ? null
+                              : () {
+                                  if (formularioKey.currentState!.validate()) {
+                                    print('Inicio de sesión con exito');
+                                    validarUsuario();
+                                  } else {
+                                    print('Error en el inicio de sesión');
+                                  }
+                                },
                           child: Text(
-                            'Iniciar Sesión',
+                            verificar ? 'Iniciando Sesión' : 'Iniciar Sesión',
                             style: TextStyle(
                               color: Colors.black,
                             ),
