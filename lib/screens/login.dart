@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventario/constants/custom_drawer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:inventario/models/usuario.dart';
 
@@ -12,7 +11,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final usuario = Get.arguments as Usuario;
   bool ocultarTexto = true;
   bool verificar = false;
   final supabase = Supabase.instance.client;
@@ -23,7 +21,6 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    /* validarUsuario(); */
   }
 
   validarUsuario() async {
@@ -38,15 +35,6 @@ class _LoginState extends State<Login> {
           .eq('username', usernameController.text)
           .eq('pass', passwordController.text)
           .single();
-
-      /// Aqui estuve moviendo por que no me deja ver las demás vistas :'(
-      /*   String? username = Get.parameters['username'];
-      String? password = Get.parameters['password'];
-      print('.-.-..-..-.-.-..-.-.-.');
-      print(username);
-      if (username == usernameController || password == passwordController) {
-        Get.offNamed('/Home');
-      } */
 
       if (response != null) {
         final data = response;
@@ -74,7 +62,6 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Custom_Drawer(usuario: usuario),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Center(
@@ -120,7 +107,7 @@ class _LoginState extends State<Login> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20.0),
                             ),
-                            hintText: 'example@gmail.com o usuario1',
+                            hintText: 'example@gmail.com',
                             labelText: 'Correo o Usuario',
                             prefixIcon: Icon(Icons.alternate_email_outlined),
                             labelStyle: TextStyle(
