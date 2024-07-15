@@ -27,6 +27,10 @@ class _LoginState extends State<Login> {
   Color color_button1 = Color.fromARGB(255, 70, 160, 30);
   Color color_button2 = Color.fromARGB(255, 4, 33, 49);
 
+// Variables de Imagenes
+  final String bg_img = '../assets/img/bg_login.jpg';
+  final String logo_img = '../assets/img/logo.png';
+
   @override
   void initState() {
     super.initState();
@@ -77,7 +81,7 @@ class _LoginState extends State<Login> {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('../assets/img/bg_login.jpg'),
+                image: AssetImage(bg_img),
                 fit: BoxFit.cover,
               ),
             ),
@@ -121,7 +125,7 @@ class _LoginState extends State<Login> {
                           children: [
                             Container(
                               child: Image.asset(
-                                '../assets/img/logo.png',
+                                logo_img,
                                 height: 150.0,
                                 width: 150.0,
                               ),
