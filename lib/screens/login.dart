@@ -17,9 +17,15 @@ class _LoginState extends State<Login> {
   final formularioKey = GlobalKey<FormState>();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+
+// Variables de colores
   Color color_container = Color.fromARGB(130, 124, 213, 44);
+  Color color_bgInputs = Colors.white;
   Color color_effects = Colors.black.withOpacity(0.5);
-  Color color_fonts_1 = Colors.white;
+  Color color_fonts_1 = Colors.black;
+  Color color_fonts_2 = Colors.white;
+  Color color_button1 = Color.fromARGB(255, 70, 160, 30);
+  Color color_button2 = Color.fromARGB(255, 4, 33, 49);
 
   @override
   void initState() {
@@ -67,7 +73,7 @@ class _LoginState extends State<Login> {
     return Scaffold(
       body: Stack(
         children: [
-        // Fondo Principal
+          // Fondo Principal
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -77,12 +83,12 @@ class _LoginState extends State<Login> {
             ),
           ),
 
-        // Fondo Transparente
+          // Fondo Transparente
           Container(
             color: color_effects,
           ),
 
-        // Contenido Principal
+          // Contenido Principal
           Padding(
             padding: EdgeInsets.all(16.0),
             child: Center(
@@ -91,6 +97,7 @@ class _LoginState extends State<Login> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    // Contenedor del login
                     Container(
                       width: 600.0,
                       height: 630.0,
@@ -105,6 +112,8 @@ class _LoginState extends State<Login> {
                           ),
                         ],
                       ),
+
+                      // Campo del logo
                       child: Padding(
                         padding: EdgeInsets.all(16.0),
                         child: Column(
@@ -118,117 +127,153 @@ class _LoginState extends State<Login> {
                               ),
                             ),
 
-                          // Espaciado
+                            // Espaciado
                             SizedBox(height: 50.0),
 
-                          /* Form Text Correo/Usuario */
-                            TextFormField(
-                              controller: usernameController,
-                              minLines: 1,
-                              maxLines: 4,
-
-                            // Estilos del input y derivados
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                                hintText: 'example@gmail.com',
-                                labelText: 'Correo o Usuario',
-                                prefixIcon:
-                                    Icon(Icons.alternate_email_outlined),
-                                labelStyle: TextStyle(
-                                  color: color_fonts_1,
-                                ),
+                            /* Form Text Correo/Usuario */
+                            Container(
+                              decoration: BoxDecoration(
+                                color: color_bgInputs,
+                                borderRadius: BorderRadius.circular(20.0),
                               ),
 
-                            // Validación de campo
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Campo requerido';
-                                }
-                                return null;
-                              },
-                            ),
+                              // Campo del input
+                              child: TextFormField(
+                                controller: usernameController,
+                                minLines: 1,
+                                maxLines: 4,
 
-                          // Espaciado
-                            SizedBox(height: 20.0),
-
-                          /* Form text Contraseña */
-                            TextFormField(
-                              controller: passwordController,
-                              obscureText: ocultarTexto,
-
-                            // Estilos del input y derivados
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                                hintText: 'Contraseña',
-                                labelText: 'Contraseña',
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    ocultarTexto
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
+                                // Estilos del input y derivados de Correo/usuario
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
                                   ),
-                                  onPressed: () {
-                                    setState(() {
-                                      ocultarTexto = !ocultarTexto;
-                                    });
-                                  },
+                                  hintText: 'example@gmail.com',
+                                  labelText: 'Correo',
+                                  prefixIcon:
+                                      Icon(Icons.alternate_email_outlined),
+                                  labelStyle: TextStyle(
+                                    color: color_fonts_1,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0,
+                                  ),
                                 ),
-                                labelStyle: TextStyle(
-                                  color: color_fonts_1,
-                                ),
-                              ),
 
-                            // Validación de campo
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              validator: (value) {
-                                if (value?.trim() == null ||
-                                    value!.trim().isEmpty) {
-                                  return 'Campo requerido';
-                                }
-                                if (value.trim().length < 8) {
-                                  return 'Contraseña muy corta';
-                                }
-                                return null;
-                              },
+                                // Validación de campo de Correo/usuario
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Campo requerido';
+                                  }
+                                  return null;
+                                },
+                              ),
                             ),
 
-                          // Espaciado
+                            // Espaciado
                             SizedBox(height: 20.0),
 
-                          /* Boton Iniciar Sesión */
-                            ElevatedButton(
-                              onPressed: verificar
-                                  ? null
-                                  : () {
-                                      if (formularioKey.currentState!
-                                          .validate()) {
-                                        print('Inicio de sesión con exito');
-                                        validarUsuario();
-                                      } else {
-                                        print('Error en el inicio de sesión');
-                                      }
-                                    },
-                              child: Text(
-                                verificar
-                                    ? 'Iniciando Sesión'
-                                    : 'Iniciar Sesión',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
+                            /* Form text Contraseña */
+                            Container(
+                              decoration: BoxDecoration(
+                                color: color_bgInputs,
+                                borderRadius: BorderRadius.circular(20.0),
                               ),
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
+
+                              // Campo del input de contraseña
+                              child: TextFormField(
+                                controller: passwordController,
+                                obscureText: ocultarTexto,
+
+                                // Estilos del input y derivados
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  hintText: '**********',
+                                  labelText: 'Contraseña',
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      ocultarTexto
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        ocultarTexto = !ocultarTexto;
+                                      });
+                                    },
+                                  ),
+                                  labelStyle: TextStyle(
+                                    color: color_fonts_1,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0,
+                                  ),
+                                ),
+
+                                // Validación de campo
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                validator: (value) {
+                                  if (value?.trim() == null ||
+                                      value!.trim().isEmpty) {
+                                    return 'Campo requerido';
+                                  }
+                                  if (value.trim().length < 8) {
+                                    return 'Contraseña muy corta';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+
+                            // Espaciado
+                            SizedBox(height: 20.0),
+
+                            /* Boton Iniciar Sesión */
+                            AnimatedContainer(
+                              duration: Duration(milliseconds: 300),
+                              width: verificar ? 50.0 : 200.0,
+                              height: 50.0,
+
+                              // Logica del boton
+                              child: ElevatedButton(
+                                onPressed: verificar
+                                    ? null
+                                    : () {
+                                        if (formularioKey.currentState!
+                                            .validate()) {
+                                          print('Inicio de sesión con exito');
+                                          validarUsuario();
+                                        } else {
+                                          print('Error en el inicio de sesión');
+                                        }
+                                      },
+
+                                // Texto del boton estilo
+                                child: Text(
+                                  verificar
+                                      ? 'Iniciando Sesión'
+                                      : 'Iniciar Sesión',
+                                  style: TextStyle(
+                                    color: color_fonts_2,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15.0,
+                                  ),
+                                ),
+
+                                // Estilos del boton estilo
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  backgroundColor: color_button2,
                                 ),
                               ),
                             ),
+
+                            // Espaciado
                             SizedBox(height: 20.0),
                           ],
                         ),
