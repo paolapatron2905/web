@@ -10,10 +10,25 @@ class Home extends StatelessWidget {
     // Obtiene los argumentos pasados a la ruta
     final usuario = Get.arguments as Usuario;
 
-    final String bg_img = 'assets/images/bg.jpg';
+// Variables para colores
+    Color color_container = Color.fromARGB(255, 124, 213, 44);
+    Color color_appbar = Color.fromARGB(255, 44, 111, 127);
+    Color color_bgInputs = Colors.white;
+    Color color_effects = Colors.black.withOpacity(0.5);
+    Color color_fonts_1 = Colors.black;
+    Color color_fonts_2 = Colors.white;
+    Color color_button1 = Color.fromARGB(255, 70, 160, 30);
+    Color color_button2 = Color.fromARGB(255, 4, 33, 49);
+
+    // Variables para imagenes
+    final String bg_img = '../assets/img/bg.jpg';
+    final String logo_img = '../assets/img/logo.png';
 
     return Scaffold(
-      appBar: Custom_Appbar(titulo: 'Home', colorNew: Colors.green),
+      // Barra de título
+      appBar: Custom_Appbar(titulo: 'Home', colorNew: color_appbar),
+
+      // Barra lateral
       drawer: Custom_Drawer(usuario: usuario), // Pasar el objeto usuario
       body: Stack(
         children: [
@@ -21,6 +36,7 @@ class Home extends StatelessWidget {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(bg_img),
+                fit: BoxFit.cover,
               ),
             ),
           ),
@@ -33,7 +49,11 @@ class Home extends StatelessWidget {
                   'Bienvenido, ${usuario.username}',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
+
+                // Espaciado
                 SizedBox(height: 10),
+
+                // Texto de bienvenida
                 Text(
                   'Tipo de Usuario: ${usuario.tipoUsuario}',
                   style: TextStyle(fontSize: 18),
