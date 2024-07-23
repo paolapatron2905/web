@@ -26,12 +26,19 @@ class Home extends StatelessWidget {
 
     return Scaffold(
       // Barra de título
-      appBar: Custom_Appbar(titulo: 'Home', colorNew: color_appbar),
+      appBar: Custom_Appbar(
+        titulo: 'Home',
+        colorNew: color_container,
+        textColor: color_fonts_2,
+      ),
 
       // Barra lateral
       drawer: Custom_Drawer(usuario: usuario), // Pasar el objeto usuario
+
+      // Contenido principal
       body: Stack(
         children: [
+          // Contenedor del fondo
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -40,14 +47,25 @@ class Home extends StatelessWidget {
               ),
             ),
           ),
+
+          // Fondo Transparente
+          Container(
+            color: color_effects,
+          ),
+
+          // Contendido o texto
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   'Bienvenido, ${usuario.username}',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: color_fonts_2,
+                  ),
                 ),
 
                 // Espaciado
@@ -56,7 +74,10 @@ class Home extends StatelessWidget {
                 // Texto de bienvenida
                 Text(
                   'Tipo de Usuario: ${usuario.tipoUsuario}',
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: color_fonts_2,
+                  ),
                 ),
                 // Aquí puedes agregar más widgets o lógica según sea necesario
               ],
