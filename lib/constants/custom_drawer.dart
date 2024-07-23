@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Custom_Drawer extends StatelessWidget {
-  void _cerrarSesion() {
+  /*void _cerrarSesion() {
     Get.offAllNamed('/login');
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -96,11 +96,11 @@ class Custom_Drawer extends StatelessWidget {
               },
             ),
             Divider(),
-            ListTile(
+            /*ListTile(
               leading: Icon(Icons.logout_outlined),
               title: Text('Exit'),
               onTap: _cerrarSesion,
-            ),
+            ),*/
           ],
         ),
       ),
