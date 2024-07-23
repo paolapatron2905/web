@@ -24,7 +24,7 @@ class Custom_Drawer extends StatelessWidget {
                 width: 100,
               ),
              */
-              child: DrawerHeader(
+              /*child: DrawerHeader(
                 decoration: BoxDecoration(
                   color: Colors.teal,
                 ),
@@ -36,7 +36,7 @@ class Custom_Drawer extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                     ), */
-                    /*Positioned.fill(
+                    Positioned.fill(
                       child: Container(
                         color: Colors.black54,
                         child: Align(
@@ -50,10 +50,10 @@ class Custom_Drawer extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ),*/
+                    ),
                   ],
                 ),
-              ),
+              ),*/
             ),
             Spacer(),
             Divider(),
