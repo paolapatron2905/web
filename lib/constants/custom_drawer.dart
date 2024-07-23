@@ -36,7 +36,7 @@ class Custom_Drawer extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                     ), */
-                    Positioned.fill(
+                    /*Positioned.fill(
                       child: Container(
                         color: Colors.black54,
                         child: Align(
@@ -50,7 +50,7 @@ class Custom_Drawer extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ),
+                    ),*/
                   ],
                 ),
               ),
