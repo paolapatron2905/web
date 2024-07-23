@@ -68,7 +68,7 @@ class _ProductosState extends State<Productos> {
         'nom_prod': nomprod_Controller.text,
         'precio': precio_Controller.text,
         'stock': stock_Controller.text,
-        'estatus': 'Activo',
+        'estatus': 'Disponible',
         'stock_minimo': stockminimo_Controller.text,
         'descripcion': descripcion_Controller.text,
         'unidad_id': idUnidad,

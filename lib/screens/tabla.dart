@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:inventario/constants/custom_drawer.dart';
 import 'package:inventario/constants/custom_appbar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-//import 'package:inventario/models/usuario.dart'; // Importar la clase Usuario
 import 'package:get/get.dart';
 
 class Ejemplo extends StatefulWidget {
@@ -11,381 +10,278 @@ class Ejemplo extends StatefulWidget {
 }
 
 class _EjemploState extends State<Ejemplo> {
-  //final usuario = Get.arguments as Usuario;
-  final List<Map<String, dynamic>> products = [
-    {
-      'producto': 'Producto 1',
-      'unidad': 'Kg',
-      'descripción': 'Descripción del Producto 1',
-      'precio': 10.0,
-      'stock': 5,
-      'stock_minimo': 10,
-      'categoria': 'Jardín',
-      'proveedor': 'Proveedor A',
-      'estado': 'Disponible',
-    },
-    {
-      'producto': 'Producto 2',
-      'unidad': 'Lt',
-      'descripción': 'Descripción del Producto 2',
-      'precio': 20.0,
-      'stock': 20,
-      'stock_minimo': 10,
-      'categoria': 'Cultivo',
-      'proveedor': 'Proveedor B',
-      'estado': 'Disponible',
-    },
-    {
-      'producto': 'Producto 3',
-      'unidad': 'Pc',
-      'descripción': 'Descripción del Producto 3',
-      'precio': 15.0,
-      'stock': 15,
-      'stock_minimo': 10,
-      'categoria': 'Jardín',
-      'proveedor': 'Proveedor C',
-      'estado': 'No disponible',
-    },
-  ];
-
-  String selectedCategory = 'Todas';
-  String selectedProvider = 'Todos';
-  String selectedState = 'Todos';
-  double minPrice = 0;
-  double maxPrice = 100;
-  double minStock = 0;
-  double maxStock = 100;
-  TextEditingController searchController = TextEditingController();
+  final SupabaseClient supabase = Supabase.instance.client;
+  List<Map<String, dynamic>> productos = [];
 
   @override
   void initState() {
     super.initState();
-    _checkLowStock();
+    _fetchProductos();
   }
 
-  void _checkLowStock() {
-    List<String> lowStockProducts = products
-        .where((product) => product['stock'] < product['stock_minimo'])
-        .map<String>((product) => product['producto'] as String)
-        .toList();
+  Future<void> _fetchProductos() async {
+    try {
+      final List<dynamic> response = await supabase.from('producto').select('''
+            id,
+            nom_prod,
+            descripcion,
+            precio,
+            stock,
+            stock_minimo,
+            unidad (nom_unidad),
+            categoria (nom_cat),
+            estatus
+          ''');
 
-    if (lowStockProducts.isNotEmpty) {
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
-        _showLowStockAlert(lowStockProducts);
+      setState(() {
+        productos = List<Map<String, dynamic>>.from(response);
       });
+    } catch (e) {
+      // Manejar error
+      print('Error al obtener productos: $e');
     }
   }
 
-  void _showLowStockAlert(List<String> lowStockProducts) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Alerta de Stock Bajo'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: lowStockProducts
-                  .map((product) => Text('El stock de $product está bajo.'))
-                  .toList(),
-            ),
-          ),
-          actions: [
-            TextButton(
-              child: Text('Aceptar'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+  Future<void> _actualizarStock(int productoId, double cantidad, bool esEntrada,
+      [String motivo = '']) async {
+    final producto = productos.firstWhere((p) => p['id'] == productoId);
+    double stockActual = producto['stock'];
+    double nuevoStock =
+        esEntrada ? stockActual + cantidad : stockActual - cantidad;
+
+    if (nuevoStock < 0) {
+      Get.snackbar(
+          'Error', 'La cantidad de salida no puede superar el stock actual');
+      return;
+    }
+
+    String tabla = esEntrada ? 'producto_entrada' : 'producto_saliente';
+
+    try {
+      // Actualizar el stock y el estatus en la tabla de productos
+      await supabase.from('producto').update({
+        'stock': nuevoStock,
+        'estatus': nuevoStock == 0
+            ? 'No disponible'
+            : nuevoStock > 0 && producto['estatus'] == 'No disponible'
+                ? 'Disponible'
+                : producto['estatus'],
+      }).eq('id', productoId);
+
+      // Registrar la entrada o salida en la tabla correspondiente
+      await supabase.from(tabla).insert({
+        'producto_id': productoId,
+        'cantidad': cantidad,
+        if (!esEntrada) 'motivo': motivo,
+      });
+
+      // Refrescar la lista de productos
+      setState(() {
+        producto['stock'] = nuevoStock;
+        producto['estatus'] = nuevoStock == 0
+            ? 'No disponible'
+            : nuevoStock > 0 && producto['estatus'] == 'No disponible'
+                ? 'Disponible'
+                : producto['estatus'];
+      });
+
+      Get.snackbar('Éxito', 'El stock ha sido actualizado correctamente');
+    } catch (e) {
+      print('Error al actualizar el stock: $e');
+      Get.snackbar('Error', 'Hubo un problema al actualizar el stock');
+    }
   }
 
-  void _showInputDialog(BuildContext context, String action, int index) {
-    final TextEditingController _controller = TextEditingController();
+  void _mostrarModal(BuildContext context, int productoId, bool esEntrada) {
+    final TextEditingController cantidadController = TextEditingController();
+    final TextEditingController otroMotivoController = TextEditingController();
+    String? motivoSeleccionado;
+    final producto = productos.firstWhere((p) => p['id'] == productoId);
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('$action cantidad'),
-          content: TextField(
-            controller: _controller,
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(hintText: "Ingrese la cantidad"),
-          ),
-          actions: [
-            TextButton(
-              child: Text('Cancelar'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text('Aceptar'),
-              onPressed: () {
-                final int? amount = int.tryParse(_controller.text);
-                if (amount != null && amount > 0) {
-                  setState(() {
-                    if (action == 'Entrada') {
-                      products[index]['stock'] += amount;
-                    } else if (action == 'Salida') {
-                      if (products[index]['stock'] >= amount) {
-                        products[index]['stock'] -= amount;
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: Text(
+                  esEntrada ? 'Entrada de producto' : 'Salida de producto'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: cantidadController,
+                    keyboardType:
+                        TextInputType.numberWithOptions(decimal: true),
+                    decoration: InputDecoration(
+                      hintText: esEntrada
+                          ? 'Ingrese la cantidad de entrada'
+                          : 'Ingrese la cantidad de salida',
+                    ),
+                  ),
+                  if (!esEntrada) ...[
+                    SizedBox(height: 16),
+                    DropdownButtonFormField<String>(
+                      value: motivoSeleccionado,
+                      items: ['motivo 1', 'motivo 2', 'motivo 3', 'otro']
+                          .map((motivo) => DropdownMenuItem(
+                                value: motivo,
+                                child: Text(motivo),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          motivoSeleccionado = value;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Motivo',
+                      ),
+                    ),
+                    if (motivoSeleccionado == 'otro')
+                      TextField(
+                        controller: otroMotivoController,
+                        decoration: InputDecoration(
+                          hintText: 'Especifique otro motivo',
+                        ),
+                      ),
+                  ],
+                ],
+              ),
+              actions: [
+                TextButton(
+                  child: Text('Cancelar'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: Text('Aceptar'),
+                  onPressed: () {
+                    double cantidad =
+                        double.tryParse(cantidadController.text) ?? 0;
+                    if (cantidad <= 0) {
+                      Get.snackbar('Error', 'Ingrese una cantidad válida');
+                    } else {
+                      String motivo = motivoSeleccionado == 'otro'
+                          ? otroMotivoController.text
+                          : motivoSeleccionado ?? '';
+                      if (!esEntrada && motivo.isEmpty) {
+                        Get.snackbar(
+                            'Error', 'Debe ingresar un motivo para la salida');
                       } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                                'La cantidad de salida no debe superar el stock disponible.'),
-                          ),
-                        );
+                        if (!esEntrada &&
+                            producto['estatus'] == 'No disponible') {
+                          Get.snackbar('Error',
+                              'No se pueden registrar salidas para un producto No disponible');
+                        } else {
+                          _actualizarStock(
+                              productoId, cantidad, esEntrada, motivo);
+                          Navigator.of(context).pop();
+                        }
                       }
                     }
-                    if (products[index]['stock'] == 0) {
-                      products[index]['estado'] = 'No disponible';
-                    } else if (products[index]['stock'] > 0) {
-                      products[index]['estado'] = 'Disponible';
-                    }
-                    _checkLowStock();
-                  });
-                  Navigator.of(context).pop();
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Ingrese una cantidad válida.'),
-                    ),
-                  );
-                }
-              },
-            ),
-          ],
+                  },
+                ),
+              ],
+            );
+          },
         );
       },
     );
-  }
-
-  List<Map<String, dynamic>> get filteredProducts {
-    return products.where((product) {
-      final matchesCategory = selectedCategory == 'Todas' ||
-          product['categoria'] == selectedCategory;
-      final matchesProvider = selectedProvider == 'Todos' ||
-          product['proveedor'] == selectedProvider;
-      final matchesState =
-          selectedState == 'Todos' || product['estado'] == selectedState;
-      final matchesPrice =
-          product['precio'] >= minPrice && product['precio'] <= maxPrice;
-      final matchesStock =
-          product['stock'] >= minStock && product['stock'] <= maxStock;
-      final matchesSearch = searchController.text.isEmpty ||
-          product['producto']
-              .toLowerCase()
-              .contains(searchController.text.toLowerCase()) ||
-          product['descripción']
-              .toLowerCase()
-              .contains(searchController.text.toLowerCase());
-
-      return matchesCategory &&
-          matchesProvider &&
-          matchesState &&
-          matchesPrice &&
-          matchesStock &&
-          matchesSearch;
-    }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Custom_Appbar(titulo: 'Inventario', colorNew: Colors.green),
-      //drawer: Custom_Drawer(usuario: usuario),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: searchController,
-                        decoration: InputDecoration(
-                          hintText: 'Buscar por nombre o descripción',
-                          suffixIcon: Icon(Icons.search),
-                        ),
-                        onChanged: (value) {
-                          setState(() {});
-                        },
-                      ),
-                    ),
-                    SizedBox(width: 8),
-                    Expanded(
-                      child: DropdownButton<String>(
-                        isExpanded: true,
-                        value: selectedCategory,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            selectedCategory = newValue!;
-                          });
-                        },
-                        items: <String>['Todas', 'Jardín', 'Cultivo']
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    SizedBox(width: 8),
-                    Expanded(
-                      child: DropdownButton<String>(
-                        isExpanded: true,
-                        value: selectedProvider,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            selectedProvider = newValue!;
-                          });
-                        },
-                        items: <String>[
-                          'Todos',
-                          'Proveedor A',
-                          'Proveedor B',
-                          'Proveedor C'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: DropdownButton<String>(
-                        isExpanded: true,
-                        value: selectedState,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            selectedState = newValue!;
-                          });
-                        },
-                        items: <String>['Todos', 'Disponible', 'No disponible']
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ],
-                ),
-                RangeSlider(
-                  values: RangeValues(minPrice, maxPrice),
-                  min: 0,
-                  max: 100,
-                  divisions: 20,
-                  labels: RangeLabels(
-                    '\$${minPrice.toStringAsFixed(0)}',
-                    '\$${maxPrice.toStringAsFixed(0)}',
-                  ),
-                  onChanged: (RangeValues values) {
-                    setState(() {
-                      minPrice = values.start;
-                      maxPrice = values.end;
-                    });
-                  },
-                ),
-                RangeSlider(
-                  values: RangeValues(minStock, maxStock),
-                  min: 0,
-                  max: 100,
-                  divisions: 20,
-                  labels: RangeLabels(
-                    '${minStock.toStringAsFixed(0)} unidades',
-                    '${maxStock.toStringAsFixed(0)} unidades',
-                  ),
-                  onChanged: (RangeValues values) {
-                    setState(() {
-                      minStock = values.start;
-                      maxStock = values.end;
-                    });
-                  },
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
+      body: productos.isEmpty
+          ? Center(child: CircularProgressIndicator())
+          : Center(
               child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: DataTable(
-                  columns: const [
-                    DataColumn(label: Text('Producto')),
-                    DataColumn(label: Text('Descripción')),
-                    DataColumn(label: Text('Precio')),
-                    DataColumn(label: Text('Stock')),
-                    DataColumn(label: Text('Proveedor')),
-                    DataColumn(label: Text('Estado')),
-                    DataColumn(label: Text('Acción')),
-                  ],
-                  rows: filteredProducts.map((product) {
-                    int index = products.indexOf(product);
-                    Color rowColor = product['stock'] < product['stock_minimo']
-                        ? Colors.red.withOpacity(0.5)
-                        : Colors.transparent;
-                    Color textColor = product['estado'] == 'No disponible'
-                        ? Colors.red
-                        : Colors.black;
-
-                    return DataRow(
-                      color: MaterialStateProperty.resolveWith<Color?>(
-                          (Set<MaterialState> states) {
-                        return rowColor;
-                      }),
-                      cells: [
-                        DataCell(Text(product['producto'])),
-                        DataCell(Text(product['descripción'])),
-                        DataCell(Text('\$' + product['precio'].toString())),
-                        DataCell(Text(product['stock'].toString() +
-                            ' ' +
-                            product['unidad'])),
-                        DataCell(Text(product['proveedor'])),
-                        DataCell(Text(
-                          product['estado'],
-                          style: TextStyle(color: textColor),
-                        )),
-                        DataCell(
-                          PopupMenuButton<String>(
-                            onSelected: (String value) {
-                              _showInputDialog(context, value, index);
-                            },
-                            itemBuilder: (BuildContext context) {
-                              return {'Entrada', 'Salida'}.map((String choice) {
-                                return PopupMenuItem<String>(
-                                  value: choice,
-                                  child: Text(choice),
-                                );
-                              }).toList();
-                            },
-                            icon: Icon(Icons.edit),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 500,
+                      width: MediaQuery.of(context).size.width,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: DataTable(
+                            columns: const <DataColumn>[
+                              DataColumn(label: Text('Nombre')),
+                              DataColumn(label: Text('Descripción')),
+                              DataColumn(label: Text('Precio')),
+                              DataColumn(label: Text('Stock')),
+                              DataColumn(label: Text('Categoría')),
+                              DataColumn(label: Text('Estatus')),
+                              DataColumn(label: Text('Acciones')),
+                            ],
+                            rows: productos.map((producto) {
+                              final bool isStockLow =
+                                  producto['stock'] < producto['stock_minimo'];
+                              return DataRow(
+                                color: isStockLow
+                                    ? MaterialStateProperty.all<Color>(
+                                        Colors.red[100]!)
+                                    : null,
+                                cells: <DataCell>[
+                                  DataCell(Text(producto['nom_prod'])),
+                                  DataCell(Text(producto['descripcion'])),
+                                  DataCell(Text(
+                                      '\$' + producto['precio'].toString())),
+                                  DataCell(Text(producto['stock'].toString() +
+                                      ' ' +
+                                      producto['unidad']['nom_unidad'])),
+                                  DataCell(
+                                      Text(producto['categoria']['nom_cat'])),
+                                  DataCell(
+                                    Text(
+                                      producto['estatus'].toString(),
+                                      style: TextStyle(
+                                        color: producto['estatus'] ==
+                                                'No disponible'
+                                            ? Colors.red
+                                            : Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    PopupMenuButton<String>(
+                                      onSelected: (String result) {
+                                        if (result == 'entrada') {
+                                          _mostrarModal(
+                                              context, producto['id'], true);
+                                        } else if (result == 'salida') {
+                                          _mostrarModal(
+                                              context, producto['id'], false);
+                                        }
+                                      },
+                                      itemBuilder: (BuildContext context) =>
+                                          <PopupMenuEntry<String>>[
+                                        const PopupMenuItem<String>(
+                                          value: 'entrada',
+                                          child: Text('Entrada'),
+                                        ),
+                                        const PopupMenuItem<String>(
+                                          value: 'salida',
+                                          child: Text('Salida'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }).toList(),
                           ),
                         ),
-                      ],
-                    );
-                  }).toList(),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ),
-        ],
-      ),
     );
   }
 }

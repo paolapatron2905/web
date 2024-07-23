@@ -7,7 +7,7 @@ import 'package:inventario/screens/home.dart';
 import 'package:inventario/screens/login.dart';
 import 'package:inventario/screens/producto_proveedor.dart';
 import 'package:inventario/screens/proveedor.dart';
-import 'package:inventario/screens/select.dart';
+import 'package:inventario/screens/reporte.dart';
 import 'package:inventario/screens/tabla.dart';
 import 'package:inventario/screens/usuarios.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -34,12 +34,12 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/tabla', page: () => Ejemplo()),
         GetPage(name: '/NuevaCategoria', page: () => InsertarCategoria()),
         GetPage(name: '/NuevaEmpresa', page: () => InsertarEmpresa()),
-        GetPage(name: '/Select', page: () => Select()),
         GetPage(name: '/Usuario', page: () => InsertarUsuario()),
         GetPage(name: '/Home', page: () => Home()),
         GetPage(name: '/productos', page: () => Productos()),
         GetPage(name: '/NuevoProveedor', page: () => InsertarProveedor()),
         GetPage(name: '/ProductoProveedor', page: () => ProductoProveedor()),
+        GetPage(name: '/Reportes', page: () => Reporte()),
         /* GetPage(name: '/login', page: () => ), */
       ],
       debugShowCheckedModeBanner: false,
