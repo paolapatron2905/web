@@ -52,7 +52,8 @@ class _InsertarCategoriaState extends State<InsertarCategoria> {
               children: [
                 TextFormField(
                   controller: nombre_controller,
-                  decoration: InputDecoration(hintText: 'Ingresa un título'),
+                  decoration:
+                      InputDecoration(hintText: 'Ingresa una categoría'),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) {
                     if (value!.isEmpty) {

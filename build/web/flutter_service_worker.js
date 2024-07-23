@@ -12,8 +12,8 @@ const RESOURCES = {"assets/AssetManifest.bin": "34349730cf02c60c07f3b2021940cbcb
 "assets/assets/img/logo-removebg.png": "b9924c21921e1b802dd2b825f14102e6",
 "assets/assets/img/logo.png": "03529790885ee4d3194582a9796910ed",
 "assets/FontManifest.json": "3a4de5ec53207e4f117136d7379cfbef",
-"assets/fonts/MaterialIcons-Regular.otf": "9d501f972c92b290e2ed711aaf44fc9d",
-"assets/NOTICES": "3dab1e49b72cfa42ecc8d27438ef3f68",
+"assets/fonts/MaterialIcons-Regular.otf": "32c6f410d6ed24cfbf7fbdc2c42b07ff",
+"assets/NOTICES": "6daec9e192137fcc019202936058ac60",
 "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "e986ebe42ef785b27164c36a9abc7818",
 "assets/packages/icons_plus/assets/flags/abkhazia.svg": "508e2b45fb2228a4c7301f24852c05b4",
 "assets/packages/icons_plus/assets/flags/afghanistan.svg": "b85a312c1521071f8d2c175d45833ff4",
@@ -1012,9 +1012,9 @@ const RESOURCES = {"assets/AssetManifest.bin": "34349730cf02c60c07f3b2021940cbcb
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c",
 "icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
-"index.html": "124700f4c11179e2ef711db8d2e19c09",
-"/": "124700f4c11179e2ef711db8d2e19c09",
-"main.dart.js": "2f2830be120e9942ee90dabde4881fe9",
+"index.html": "d28c2b62685b4e4d80036a08a2e8609e",
+"/": "d28c2b62685b4e4d80036a08a2e8609e",
+"main.dart.js": "2b7f0bcd938e1e72764418122e33db66",
 "manifest.json": "f114c3de09afa176687a69e91ea009c1",
 "version.json": "7e475e96dd6d65aec55085d2d073c8d3"};
 // The application shell files that are downloaded before a service worker can

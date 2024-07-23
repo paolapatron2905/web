@@ -152,10 +152,9 @@ class _LoginState extends State<Login> {
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20.0),
                                   ),
-                                  hintText: 'example@gmail.com',
-                                  labelText: 'Correo',
-                                  prefixIcon:
-                                      Icon(Icons.alternate_email_outlined),
+                                  hintText: 'usuario1234',
+                                  labelText: 'Usuario',
+                                  prefixIcon: Icon(Icons.person),
                                   labelStyle: TextStyle(
                                     color: color_fonts_1,
                                     fontWeight: FontWeight.bold,

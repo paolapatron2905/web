@@ -3,8 +3,27 @@ import 'package:inventario/constants/custom_appbar.dart';
 import 'package:inventario/constants/custom_drawer.dart';
 import 'package:inventario/models/usuario.dart';
 import 'package:get/get.dart';
+import 'package:inventario/models/sesion.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  @override
+  void initState() {
+    super.initState();
+    validar_sesion();
+  }
+
+  validar_sesion() async {
+    int? tipo = await Sesion().sesion();
+    if (tipo == 3) {
+      print('tipo de usuario 3');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Obtiene los argumentos pasados a la ruta
