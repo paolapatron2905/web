@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventario/constants/constant.dart';
 import 'package:inventario/screens/categoria.dart';
 import 'package:inventario/screens/empresa.dart';
 import 'package:inventario/screens/form_productos.dart';
@@ -27,8 +28,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Inventario',
-      initialRoute: '/',
+      title: 'AgroInvent',
+      initialRoute: client.auth.currentSession != null ? '/Home' : '/',
       getPages: [
         GetPage(name: '/', page: () => Login()),
         GetPage(name: '/tabla', page: () => Ejemplo()),
