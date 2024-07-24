@@ -52,7 +52,7 @@ class _HomeState extends State<Home> {
       ),
 
       // Barra lateral
-      drawer: Custom_Drawer(usuario: usuario), // Pasar el objeto usuario
+      drawer: Custom_Drawer(), // Pasar el objeto usuario
 
       // Contenido principal
       body: Stack(
