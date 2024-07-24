@@ -93,7 +93,6 @@ class _ProductosState extends State<Productos> {
         titulo: 'Formulario de Productos',
         colorNew: Colors.green,
       ),
-      drawer: Custom_Drawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(

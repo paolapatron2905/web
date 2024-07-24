@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  fl_chart: ^0.40.0 # o la versión más reciente
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -40,6 +41,8 @@ dependencies:
   get: ^4.6.6
   supabase_flutter: ^2.5.6
   dropdown_textfield: ^1.2.0
+  flutter_charts: ^0.5.2
+  d_chart: ^2.6.9
 
 dev_dependencies:
   flutter_test:

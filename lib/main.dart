@@ -6,6 +6,7 @@ import 'package:inventario/screens/categoria.dart';
 import 'package:inventario/screens/home.dart';
 import 'package:inventario/screens/login.dart';
 import 'package:inventario/screens/proveedor.dart';
+import 'package:inventario/screens/reportes.dart';
 import 'package:inventario/screens/select.dart';
 import 'package:inventario/screens/tabla.dart';
 import 'package:inventario/screens/usuarios.dart';
@@ -13,6 +14,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   await Supabase.initialize(
     url: 'https://zdshwmpzzpcdbfhmrbgh.supabase.co',
     anonKey:
@@ -38,6 +41,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/NuevoProveedor', page: () => InsertarProveedor()),
         GetPage(name: '/Select', page: () => Select()),
         GetPage(name: '/Usuario', page: () => InsertarUsuario()),
+        GetPage(name: '/reportes', page: () => Reportes()),
         GetPage(name: '/Home', page: () => Home()),
         GetPage(name: '/productos', page: () => Productos())
         /* GetPage(name: '/login', page: () => ), */

@@ -83,7 +83,6 @@ class _ProductoProveedorState extends State<ProductoProveedor> {
     return Scaffold(
       appBar: Custom_Appbar(
           titulo: 'Formulario de Productos', colorNew: Colors.green),
-      drawer: Custom_Drawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
