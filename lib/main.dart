@@ -32,6 +32,8 @@ class MyApp extends StatelessWidget {
       initialRoute: client.auth.currentSession != null ? '/Home' : '/',
       getPages: [
         GetPage(name: '/', page: () => Login()),
+        GetPage(name: '/Home', page: () => Home()),
+        GetPage(name: '/Usuario', page: () => InsertarUsuario()),
         GetPage(name: '/tabla', page: () => Ejemplo()),
         GetPage(name: '/NuevaCategoria', page: () => InsertarCategoria()),
         GetPage(name: '/NuevaEmpresa', page: () => InsertarEmpresa()),
