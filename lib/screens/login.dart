@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:inventario/models/usuario.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -51,12 +50,11 @@ class _LoginState extends State<Login> {
 
       if (response != null) {
         final data = response;
-        Usuario usuario = Usuario(
-          username: data['username'],
-          tipoUsuario: data['tipo_usuario_id'],
-        );
+        String userId =
+            data['id'].toString(); // Convertir a String si es necesario
 
-        Get.offNamed('/Home', arguments: usuario);
+        // Redirige a la página de inicio con el ID del usuario en la URL
+        Get.toNamed('/Home/$userId');
       } else {
         Get.snackbar('Error', 'Usuario o contraseña incorrectos',
             backgroundColor: Colors.red, colorText: Colors.white);
