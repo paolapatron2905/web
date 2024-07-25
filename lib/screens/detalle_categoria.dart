@@ -7,8 +7,10 @@ class DetalleCategoria extends StatelessWidget {
 
   Future<List<Map<String, dynamic>>> _fetchProductosPorCategoria(
       String categoryId) async {
-    final response =
-        await supabase.from('producto').select('*').eq('categoria', categoryId);
+    final response = await supabase
+        .from('producto')
+        .select('*')
+        .eq('categoria_id', categoryId);
 
     return List<Map<String, dynamic>>.from(response);
   }

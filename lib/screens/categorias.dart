@@ -35,11 +35,14 @@ class _CategoriasState extends State<Categorias> {
     switch (categoryName.toLowerCase()) {
       case 'semillas':
         return Icons.eco;
-      case 'fertilizante':
+      case 'fertilizantes':
         return Icons.local_florist;
-      case 'herramientas':
+      case 'equipos agrícolas':
         return Icons.build;
-      // Añade más casos para otras categorías aquí
+      case 'herbicidas':
+        return Icons.eco_sharp;
+      case 'insecticidas':
+        return Icons.bug_report_rounded;
       default:
         return Icons.category;
     }
