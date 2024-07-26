@@ -50,6 +50,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final userId = Get.parameters['userId'];
 
+    // Variables de diseño (colores)
     Color color_container = Color.fromARGB(255, 124, 213, 44);
     Color color_appbar = Color.fromARGB(255, 44, 111, 127);
     Color color_bgInputs = Colors.white;
@@ -59,18 +60,26 @@ class _HomeState extends State<Home> {
     Color color_button1 = Color.fromARGB(255, 70, 160, 30);
     Color color_button2 = Color.fromARGB(255, 4, 33, 49);
 
+    // Imágenes y rutas
     final String bg_img = '../assets/img/bg.jpg';
-    final String logo_img = '../assets/img/logo.png';
 
     return Scaffold(
+
+      // Encabezado
       appBar: Custom_Appbar(
         titulo: 'Home',
         colorNew: color_container,
         textColor: color_fonts_2,
       ),
+
+      // Menu lateral
       drawer: Custom_Drawer(),
+
+      // Contenido principal
       body: Stack(
         children: [
+
+          // Fondo 1
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -79,9 +88,13 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
+
+          // Fondo 2
           Container(
             color: color_effects,
           ),
+
+
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -91,7 +104,11 @@ class _HomeState extends State<Home> {
                   'Próximos a terminarse',
                   style: TextStyle(color: color_fonts_2),
                 ),
+
+                // Espaciado
                 SizedBox(height: 10),
+
+                // Productos cercanos
                 if (productosCercanos.isNotEmpty)
                   Expanded(
                     child: ListView.builder(
