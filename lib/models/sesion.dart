@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Sesion {
@@ -24,11 +23,9 @@ class Sesion {
           .limit(1)
           .single();
 
-      if (response != null) {
-        print('Error al obtener tipo de usuario: ${response}');
-        return null;
-      }
-
+      print('Error al obtener tipo de usuario: ${response}');
+      return null;
+    
       tipo_usuario = response['tipo_usuario_id'] as int?;
       return tipo_usuario;
     }

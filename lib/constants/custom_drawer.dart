@@ -1,67 +1,69 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart'; // Importar la clase Usuario
 
 class Custom_Drawer extends StatelessWidget {
-  const Custom_Drawer({super.key});
+  void _cerrarSesion() {
+    Get.offAllNamed('/login');
+  }
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: SafeArea(
-        child: Column(
+        child: ListView(
+          padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(child: Icon(Icons.home)),
-            ListTile(
-              leading: Icon(Icons.access_time_filled_sharp),
-              title: Text('Ejemplo'),
-              subtitle: Text('Descripción'),
-              onTap: () {
-                Get.toNamed('/');
-              },
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+              child: DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.teal,
+                ),
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Container(
+                        color: Colors.black54,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Sistema de Gestión de Inventarios',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
+            Spacer(),
             ListTile(
-              trailing: Icon(Icons.access_time_filled_sharp),
-              title: Text('Ejemplo'),
+              trailing: Icon(Icons.production_quantity_limits_outlined),
+              title: Text('Productos'),
               onTap: () {
-                Get.toNamed('/Ejemplo');
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.access_time_filled_sharp),
-              title: Text('Ejemplo'),
-              onTap: () {
-                //funcion vacía
-              },
-            ),
-            ListTile(
-              trailing: Icon(Icons.access_time_filled_sharp),
-              title: Text('Figura1'),
-              onTap: () {
-                Get.toNamed('/Figura1');
-              },
-            ),
-            ListTile(
-              trailing: Icon(Icons.access_time_filled_sharp),
-              title: Text('Imagenes de perritos'),
-              onTap: () {
-                Get.toNamed('/Perro');
-              },
-            ),
-            ListTile(
-              trailing: Icon(Icons.access_time_filled_sharp),
-              title: Text('Responsivo'),
-              onTap: () {
-                Get.toNamed('/OtroResponsivo');
+                Get.toNamed('/tabla');
               },
             ),
             Spacer(),
-            Divider(),
             ListTile(
-              leading: Icon(Icons.access_time_filled_sharp),
-              title: Text('Ejemplo'),
+              trailing: Icon(Icons.production_quantity_limits_outlined),
+              title: Text('Categorías'),
               onTap: () {
-                //funcion vacía
+                Get.toNamed('/categorias');
               },
+            ),
+            Spacer(),
+            ListTile(
+              leading: Icon(Icons.logout_outlined),
+              title: Text('Exit'),
+              onTap: _cerrarSesion,
             ),
           ],
         ),
