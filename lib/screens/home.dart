@@ -66,7 +66,7 @@ class _HomeState extends State<Home> {
       appBar: Custom_Appbar(
         titulo: 'Home',
         colorNew: color_container,
-        textColor: color_fonts_1,
+        textColor: color_fonts_2,
       ),
       drawer: Custom_Drawer(),
       body: Stack(
@@ -103,11 +103,11 @@ class _HomeState extends State<Home> {
                           child: ListTile(
                             title: Text(
                               producto['nom_prod'],
-                              style: TextStyle(color: color_fonts_1),
+                              style: TextStyle(color: color_fonts_2),
                             ),
                             subtitle: Text(
                               'Stock: ${producto['stock']} ${producto['unidad']['nom_unidad']}',
-                              style: TextStyle(color: color_fonts_1),
+                              style: TextStyle(color: color_fonts_2),
                             ),
                             trailing: ElevatedButton(
                               onPressed: () {
@@ -117,7 +117,13 @@ class _HomeState extends State<Home> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: color_button1,
                               ),
-                              child: Text('Pedido'),
+                              child: Text(
+                                'Pedido',
+                                style: TextStyle(
+                                  color: color_fonts_2,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                         );
