@@ -58,6 +58,7 @@ class _InsertarEmpresaState extends State<InsertarEmpresa> {
                     if (value!.isEmpty) {
                       return 'Completa este campo';
                     }
+                    return null;
                   },
                 ),
                 ElevatedButton(

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:inventario/constants/custom_drawer.dart';
 import 'package:inventario/constants/custom_appbar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:get/get.dart';
 
 class Reporte extends StatefulWidget {
   const Reporte({super.key});

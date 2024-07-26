@@ -16,7 +16,6 @@ import 'package:inventario/screens/tabla.dart';
 import 'package:inventario/screens/usuarios.dart';
 import 'package:inventario/screens/categorias.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 Future<void> main() async {
@@ -54,8 +53,9 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/categorias', page: () => Categorias()),
         GetPage(name: '/productoDetalle', page: () => ProductoDetalle()),
         GetPage(
-            name: '/detalle_categoria/:categoryId',
-            page: () => DetalleCategoria()),
+          name: '/detalle_categoria/:categoryId',
+          page: () => DetalleCategoria(),
+        ),
         /* GetPage(name: '/login', page: () => ), */
       ],
       debugShowCheckedModeBanner: false,

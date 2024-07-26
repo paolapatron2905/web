@@ -66,7 +66,7 @@ class _HomeState extends State<Home> {
       appBar: Custom_Appbar(
         titulo: 'Home',
         colorNew: color_container,
-        textColor: color_fonts_2,
+        textColor: color_fonts_1,
       ),
       drawer: Custom_Drawer(),
       body: Stack(
