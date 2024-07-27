@@ -52,10 +52,10 @@ class _HomeState extends State<Home> {
 
     // Variables de diseño (colores)
     Color color_container = Color.fromARGB(255, 124, 213, 44);
-    Color color_appbar = Color.fromARGB(255, 44, 111, 127);
-    Color color_bgInputs = Colors.white;
+    // Color color_appbar = Color.fromARGB(255, 44, 111, 127);
+    // Color color_bgInputs = Colors.white;
     Color color_effects = Colors.black.withOpacity(0.5);
-    Color color_fonts_1 = Colors.black;
+    // Color color_fonts_1 = Colors.black;
     Color color_fonts_2 = Colors.white;
     Color color_button1 = Color.fromARGB(255, 70, 160, 30);
     Color color_button2 = Color.fromARGB(255, 4, 33, 49);
@@ -64,7 +64,6 @@ class _HomeState extends State<Home> {
     final String bg_img = '../assets/img/bg.jpg';
 
     return Scaffold(
-
       // Encabezado
       appBar: Custom_Appbar(
         titulo: 'Home',
@@ -78,7 +77,6 @@ class _HomeState extends State<Home> {
       // Contenido principal
       body: Stack(
         children: [
-
           // Fondo 1
           Container(
             decoration: BoxDecoration(
@@ -93,7 +91,6 @@ class _HomeState extends State<Home> {
           Container(
             color: color_effects,
           ),
-
 
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -132,7 +129,7 @@ class _HomeState extends State<Home> {
                                     '/pedido/$userId/${producto['id']}');
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: color_button1,
+                                backgroundColor: color_button2,
                               ),
                               child: Text(
                                 'Pedido',
