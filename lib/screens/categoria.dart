@@ -59,6 +59,7 @@ class _InsertarCategoriaState extends State<InsertarCategoria> {
                     if (value!.isEmpty) {
                       return 'Completa este campo';
                     }
+                    return null;
                   },
                 ),
                 ElevatedButton(

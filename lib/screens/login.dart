@@ -48,18 +48,13 @@ class _LoginState extends State<Login> {
           .eq('pass', passwordController.text)
           .single();
 
-      if (response != null) {
-        final data = response;
-        String userId =
-            data['id'].toString(); // Convertir a String si es necesario
+      final data = response;
+      String userId =
+          data['id'].toString(); // Convertir a String si es necesario
 
-        // Redirige a la página de inicio con el ID del usuario en la URL
-        Get.toNamed('/Home/$userId');
-      } else {
-        Get.snackbar('Error', 'Usuario o contraseña incorrectos',
-            backgroundColor: Colors.red, colorText: Colors.white);
-      }
-    } catch (e) {
+      // Redirige a la página de inicio con el ID del usuario en la URL
+      Get.toNamed('/Home/$userId');
+        } catch (e) {
       print(e);
       Get.snackbar('Error', 'Hubo un error al iniciar sesión',
           backgroundColor: Colors.red, colorText: Colors.white);

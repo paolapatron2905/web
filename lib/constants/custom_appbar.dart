@@ -4,12 +4,14 @@ class Custom_Appbar extends StatelessWidget implements PreferredSizeWidget {
   final String titulo;
   final Color colorNew;
   final Color textColor;
+  final String logoPath;
 
   const Custom_Appbar({
     super.key,
     required this.titulo,
     required this.colorNew,
     this.textColor = Colors.white,
+    this.logoPath = '../assets/img/logo.png',
   });
 
   @override
@@ -21,13 +23,24 @@ class Custom_Appbar extends StatelessWidget implements PreferredSizeWidget {
     ];
 
     return AppBar(
-      title: Text(
-        titulo,
-        style: TextStyle(
-          color: textColor,
+      title: Row(children: [
+        Image.asset(
+          logoPath,
+          height: 55,
         ),
-        overflow: TextOverflow.ellipsis,
-      ),
+
+        // Espaciado entre logo y titulo
+        SizedBox(width: 10),
+
+        // Título centralizado y truncado
+        Text(
+          titulo,
+          style: TextStyle(
+            color: textColor,
+          ),
+          overflow: TextOverflow.ellipsis,
+        ),
+      ]),
       backgroundColor: colorNew,
       elevation: 30,
       actions: [
