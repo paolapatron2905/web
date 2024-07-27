@@ -12,7 +12,11 @@ class Custom_Drawer extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
-            DrawerHeader(child: Icon(Icons.home)),
+            DrawerHeader(
+              child: Icon(
+                Icons.home,
+              ),
+            ),
             ListTile(
               leading: Icon(Icons.inventory),
               title: Text('Ver inventario'),

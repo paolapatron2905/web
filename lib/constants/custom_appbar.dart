@@ -5,6 +5,7 @@ class Custom_Appbar extends StatelessWidget implements PreferredSizeWidget {
   final Color colorNew;
   final Color textColor;
   final String logoPath;
+  final Color drawerIconColor;
 
   const Custom_Appbar({
     super.key,
@@ -12,6 +13,7 @@ class Custom_Appbar extends StatelessWidget implements PreferredSizeWidget {
     required this.colorNew,
     this.textColor = Colors.white,
     this.logoPath = '../assets/img/logo.png',
+    this.drawerIconColor = Colors.white,
   });
 
   @override
@@ -43,6 +45,9 @@ class Custom_Appbar extends StatelessWidget implements PreferredSizeWidget {
       ]),
       backgroundColor: colorNew,
       elevation: 30,
+      iconTheme: IconThemeData(
+        color: drawerIconColor,
+      ),
       actions: [
         PopupMenuButton<String>(
           icon: Icon(Icons.notifications, color: textColor),
