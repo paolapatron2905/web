@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart'; // Importar la clase Usuario
+import 'package:get/get.dart';
 
 class Custom_Drawer extends StatelessWidget {
   void _cerrarSesion() {
@@ -10,59 +10,49 @@ class Custom_Drawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: SafeArea(
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-              child: DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.teal,
-                ),
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: Container(
-                        color: Colors.black54,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Sistema de Gestión de Inventarios',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Spacer(),
+            DrawerHeader(child: Icon(Icons.home)),
             ListTile(
-              trailing: Icon(Icons.production_quantity_limits_outlined),
-              title: Text('Productos'),
+              leading: Icon(Icons.inventory),
+              title: Text('Ver inventario'),
               onTap: () {
                 Get.toNamed('/tabla');
               },
             ),
-            Spacer(),
             ListTile(
-              trailing: Icon(Icons.production_quantity_limits_outlined),
+              leading: Icon(Icons.category),
               title: Text('Categorías'),
               onTap: () {
                 Get.toNamed('/categorias');
               },
             ),
-            Spacer(),
             ListTile(
-              leading: Icon(Icons.logout_outlined),
-              title: Text('Exit'),
+              leading: Icon(Icons.business_center),
+              title: Text('Proveedores'),
+              onTap: () {
+                Get.toNamed('/NuevoProveedor');
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.business),
+              title: Text('Empresas'),
+              onTap: () {
+                Get.toNamed('/NuevaEmpresa');
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.bar_chart),
+              title: Text('Reportes'),
+              onTap: () {
+                Get.toNamed('/Reportes');
+              },
+            ),
+            Spacer(),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Salir'),
               onTap: _cerrarSesion,
             ),
           ],

@@ -14,6 +14,12 @@ class Custom_Appbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Map<String, String>> notificaciones = [
+      // Agrega tus notificaciones aquí
+      // {'title': 'Notificación 1', 'description': 'Descripción de la notificación 1'},
+      // {'title': 'Notificación 2', 'description': 'Descripción de la notificación 2'},
+    ];
+
     return AppBar(
       title: Text(
         titulo,
@@ -31,25 +37,28 @@ class Custom_Appbar extends StatelessWidget implements PreferredSizeWidget {
             // Maneja la selección si es necesario
           },
           itemBuilder: (BuildContext context) {
-            return [
-              PopupMenuItem<String>(
-                value: 'notification1',
-                child: ListTile(
-                  leading: Icon(Icons.notifications),
-                  title: Text('Notificación 1'),
-                  subtitle: Text('Descripción de la notificación 1'),
+            if (notificaciones.isEmpty) {
+              return [
+                PopupMenuItem<String>(
+                  value: 'no_notifications',
+                  child: ListTile(
+                    leading: Icon(Icons.notifications_off),
+                    title: Text('Por el momento no hay notificaciones'),
+                  ),
                 ),
-              ),
-              PopupMenuItem<String>(
-                value: 'notification2',
-                child: ListTile(
-                  leading: Icon(Icons.notifications),
-                  title: Text('Notificación 2'),
-                  subtitle: Text('Descripción de la notificación 2'),
-                ),
-              ),
-              // Agrega más notificaciones aquí
-            ];
+              ];
+            } else {
+              return notificaciones.map((notificacion) {
+                return PopupMenuItem<String>(
+                  value: notificacion['title']!,
+                  child: ListTile(
+                    leading: Icon(Icons.notifications),
+                    title: Text(notificacion['title']!),
+                    subtitle: Text(notificacion['description']!),
+                  ),
+                );
+              }).toList();
+            }
           },
         ),
       ],

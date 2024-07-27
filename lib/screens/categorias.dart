@@ -48,6 +48,10 @@ class _CategoriasState extends State<Categorias> {
     }
   }
 
+  void _navigateToRegisterCategory() {
+    Get.toNamed('/NuevaCategoria');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,6 +101,11 @@ class _CategoriasState extends State<Categorias> {
           : Center(
               child: CircularProgressIndicator(),
             ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _navigateToRegisterCategory,
+        backgroundColor: Colors.green,
+        child: Icon(Icons.add),
+      ),
     );
   }
 }

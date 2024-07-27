@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// import 'package:inventario/constants/custom_drawer.dart';
-import 'package:inventario/constants/custom_appbar.dart';
-//import 'package:inventario/models/usuario.dart'; // Importar la clase Usuario
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class InsertarProveedor extends StatefulWidget {
@@ -13,11 +10,11 @@ class InsertarProveedor extends StatefulWidget {
 }
 
 class _InsertarProveedorState extends State<InsertarProveedor> {
-  //final usuario = Get.arguments as Usuario;
-  bool ver = true;
   bool guardando = false;
   bool cargandoEmpresa = true;
-  bool cargandoCiudad = true;
+  bool cargandoCiudad = false;
+  bool cargandoEstado = true;
+
   final supabase = Supabase.instance.client;
   final formularioKey = GlobalKey<FormState>();
   final nombreController = TextEditingController();
@@ -27,14 +24,16 @@ class _InsertarProveedorState extends State<InsertarProveedor> {
 
   int? empresaSeleccionada;
   int? ciudadSeleccionada;
+  int? estadoSeleccionado;
   List<Map<String, dynamic>> Empresa = [];
   List<Map<String, dynamic>> Ciudad = [];
+  List<Map<String, dynamic>> Estado = [];
 
   @override
   void initState() {
     super.initState();
     cargarEmpresa();
-    cargarCiudad();
+    cargarEstados();
   }
 
   cargarEmpresa() async {
@@ -59,13 +58,35 @@ class _InsertarProveedorState extends State<InsertarProveedor> {
     }
   }
 
-  cargarCiudad() async {
+  cargarEstados() async {
+    setState(() {
+      cargandoEstado = true;
+    });
+    try {
+      final List<Map<String, dynamic>> response =
+          await supabase.from('estado').select();
+      setState(() {
+        Estado = response;
+      });
+    } catch (e) {
+      Get.snackbar(
+          'Error', 'Hubo un error al cargar la información de los estados',
+          backgroundColor: Colors.red, colorText: Colors.white);
+      print('Error: $e');
+    } finally {
+      setState(() {
+        cargandoEstado = false;
+      });
+    }
+  }
+
+  cargarCiudad(int estadoId) async {
     setState(() {
       cargandoCiudad = true;
     });
     try {
       final List<Map<String, dynamic>> response =
-          await supabase.from('ciudad').select();
+          await supabase.from('ciudad').select().eq('estado_id', estadoId);
       setState(() {
         Ciudad = response;
       });
@@ -129,6 +150,8 @@ class _InsertarProveedorState extends State<InsertarProveedor> {
     setState(() {
       empresaSeleccionada = null;
       ciudadSeleccionada = null;
+      estadoSeleccionado = null;
+      Ciudad = [];
     });
     formularioKey.currentState!.reset();
   }
@@ -136,9 +159,11 @@ class _InsertarProveedorState extends State<InsertarProveedor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Custom_Appbar(titulo: 'Nuevo Proveedor', colorNew: Colors.green),
-      //drawer: Custom_Drawer(usuario: usuario),
-      body: cargandoEmpresa || cargandoCiudad
+      appBar: AppBar(
+        title: Text('Nuevo Proveedor'),
+        backgroundColor: Colors.green,
+      ),
+      body: cargandoEmpresa || cargandoEstado
           ? Center(child: CircularProgressIndicator())
           : Form(
               key: formularioKey,
@@ -218,14 +243,41 @@ class _InsertarProveedorState extends State<InsertarProveedor> {
                     ),
                     SizedBox(height: 20),
                     DropdownButtonFormField<int>(
+                      value: estadoSeleccionado,
+                      decoration:
+                          InputDecoration(hintText: 'Selecciona un estado'),
+                      items: Estado.map((estado) {
+                        return DropdownMenuItem<int>(
+                          value: estado['id'],
+                          child: Text(estado['nom_estado']),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          estadoSeleccionado = value;
+                          ciudadSeleccionada = null;
+                          Ciudad = [];
+                          if (value != null) {
+                            cargarCiudad(value);
+                          }
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Selecciona un estado';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    DropdownButtonFormField<int>(
                       value: ciudadSeleccionada,
                       decoration:
                           InputDecoration(hintText: 'Selecciona una ciudad'),
-                      items: Ciudad.map((tipo) {
-                        // Cambiar Empresa a Ciudad
+                      items: Ciudad.map((ciudad) {
                         return DropdownMenuItem<int>(
-                          value: tipo['id'],
-                          child: Text(tipo['nom_ciudad']),
+                          value: ciudad['id'],
+                          child: Text(ciudad['nom_ciudad']),
                         );
                       }).toList(),
                       onChanged: (value) {
@@ -250,7 +302,7 @@ class _InsertarProveedorState extends State<InsertarProveedor> {
                               }
                             },
                       child: Text(guardando ? 'Guardando' : 'Guardar'),
-                    )
+                    ),
                   ],
                 ),
               ),

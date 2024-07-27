@@ -3,7 +3,7 @@ import 'package:inventario/constants/custom_drawer.dart';
 import 'package:inventario/constants/custom_appbar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class Reporte extends StatefulWidget {
   const Reporte({super.key});
@@ -46,8 +46,9 @@ class _ReporteState extends State<Reporte> {
     try {
       final List<dynamic> response =
           await supabase.from('producto_entrada').select('*');
+      List<Map<String, dynamic>> groupedData = _groupByDate(response);
       setState(() {
-        productoEntradas = List<Map<String, dynamic>>.from(response);
+        productoEntradas = groupedData;
       });
     } catch (e) {
       print('Error al obtener producto_entrada: $e');
@@ -58,12 +59,37 @@ class _ReporteState extends State<Reporte> {
     try {
       final List<dynamic> response =
           await supabase.from('producto_saliente').select('*');
+      List<Map<String, dynamic>> groupedData = _groupByDate(response);
       setState(() {
-        productoSalidas = List<Map<String, dynamic>>.from(response);
+        productoSalidas = groupedData;
       });
     } catch (e) {
       print('Error al obtener producto_saliente: $e');
     }
+  }
+
+  List<Map<String, dynamic>> _groupByDate(List<dynamic> data) {
+    Map<String, double> groupedMap = {};
+
+    for (var item in data) {
+      String date = item['created_at'].split(' ')[0]; // Extraer solo la fecha
+      double cantidad = item['cantidad'].toDouble();
+
+      if (groupedMap.containsKey(date)) {
+        groupedMap[date] = groupedMap[date]! + cantidad;
+      } else {
+        groupedMap[date] = cantidad;
+      }
+    }
+
+    List<Map<String, dynamic>> groupedData = groupedMap.entries.map((entry) {
+      return {'fecha': entry.key, 'cantidad': entry.value};
+    }).toList();
+
+    // Ordenar por fecha
+    groupedData.sort((a, b) => a['fecha'].compareTo(b['fecha']));
+
+    return groupedData;
   }
 
   @override
@@ -71,6 +97,7 @@ class _ReporteState extends State<Reporte> {
     return Scaffold(
       appBar: Custom_Appbar(titulo: 'Reportes', colorNew: Colors.green),
       body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             _buildProductoChart(),
@@ -84,10 +111,17 @@ class _ReporteState extends State<Reporte> {
 
   Widget _buildProductoChart() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Stock de Productos'),
+          Align(
+            alignment: Alignment.center,
+            child: Text(
+              'Stock de Productos',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
           SizedBox(
               height: 300,
               child: BarChart(_getBarChartData(productos, 'stock'))),
@@ -98,14 +132,22 @@ class _ReporteState extends State<Reporte> {
 
   Widget _buildProductoEntradaChart() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Entradas de Productos'),
+          Align(
+            alignment: Alignment.center,
+            child: Text(
+              'Entradas de Productos',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
           SizedBox(
               height: 300,
-              child:
-                  LineChart(_getLineChartData(productoEntradas, 'cantidad'))),
+              child: productoEntradas.isEmpty
+                  ? Center(child: Text('No hay datos disponibles'))
+                  : LineChart(_getLineChartData(productoEntradas, 'cantidad'))),
         ],
       ),
     );
@@ -113,13 +155,22 @@ class _ReporteState extends State<Reporte> {
 
   Widget _buildProductoSalidaChart() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Salidas de Productos'),
+          Align(
+            alignment: Alignment.center,
+            child: Text(
+              'Salidas de Productos',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
           SizedBox(
               height: 300,
-              child: LineChart(_getLineChartData(productoSalidas, 'cantidad'))),
+              child: productoSalidas.isEmpty
+                  ? Center(child: Text('No hay datos disponibles'))
+                  : LineChart(_getLineChartData(productoSalidas, 'cantidad'))),
         ],
       ),
     );
@@ -129,14 +180,17 @@ class _ReporteState extends State<Reporte> {
     return BarChartData(
       barGroups: data.map((item) {
         return BarChartGroupData(
-          x: data.indexOf(item), // Use index as x value
+          x: data.indexOf(item),
           barRods: [
             BarChartRodData(y: item[field].toDouble(), colors: [Colors.blue])
           ],
         );
       }).toList(),
       titlesData: FlTitlesData(
-        leftTitles: SideTitles(showTitles: true),
+        leftTitles: SideTitles(
+          showTitles: true,
+          interval: 30,
+        ),
         bottomTitles: SideTitles(
           showTitles: true,
           getTitles: (double value) {
@@ -148,17 +202,61 @@ class _ReporteState extends State<Reporte> {
           },
         ),
       ),
+      gridData: FlGridData(
+        show: true,
+        horizontalInterval: 30,
+      ),
+      borderData: FlBorderData(
+        show: true,
+        border: Border(
+          top: BorderSide.none,
+          right: BorderSide.none,
+          left: BorderSide(color: Colors.black),
+          bottom: BorderSide(color: Colors.black),
+        ),
+      ),
     );
   }
 
   LineChartData _getLineChartData(
       List<Map<String, dynamic>> data, String field) {
     return LineChartData(
+      titlesData: FlTitlesData(
+        leftTitles: SideTitles(
+          showTitles: true,
+          interval: 30,
+        ),
+        bottomTitles: SideTitles(
+          showTitles: true,
+          getTitles: (double value) {
+            int index = value.toInt();
+            if (index < data.length) {
+              String fecha = data[index]['fecha'];
+              return DateFormat('dd-MM').format(DateTime.parse(fecha));
+            }
+            return '';
+          },
+        ),
+      ),
+      gridData: FlGridData(
+        show: true,
+        horizontalInterval: 30,
+      ),
+      borderData: FlBorderData(
+        show: true,
+        border: Border(
+          top: BorderSide.none,
+          right: BorderSide.none,
+          left: BorderSide(color: Colors.black),
+          bottom: BorderSide(color: Colors.black),
+        ),
+      ),
       lineBarsData: [
         LineChartBarData(
-          spots: data.map((item) {
-            return FlSpot(
-                data.indexOf(item).toDouble(), item[field].toDouble());
+          spots: data.asMap().entries.map((entry) {
+            int index = entry.key;
+            Map<String, dynamic> item = entry.value;
+            return FlSpot(index.toDouble(), item[field].toDouble());
           }).toList(),
           isCurved: true,
           colors: [Colors.green],

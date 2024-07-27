@@ -19,7 +19,12 @@ class Pedido extends StatelessWidget {
           children: <Widget>[
             Text('User ID: $userId'),
             Text('Product ID: $productId'),
-            // Aquí puedes agregar más lógica para manejar el pedido usando el productId
+            SizedBox(height: 20),
+            Text(
+              'La página no está disponible por el momento',
+              style: TextStyle(fontSize: 18, color: Colors.red),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),
