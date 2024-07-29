@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventario/constants/custom_appbar.dart';
 import 'package:inventario/constants/custom_drawer.dart';
-import 'package:get/get.dart';
+// import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Home extends StatefulWidget {
@@ -83,14 +83,14 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final userId = Get.parameters['userId'];
+    // final userId = Get.parameters['userId'];
 
     // Variables de diseño (colores)
     Color color_container = Color.fromARGB(255, 124, 213, 44);
     Color color_effects = Colors.black.withOpacity(0.5);
     Color color_fonts_2 = Colors.white;
-    Color color_button1 = Color.fromARGB(255, 70, 160, 30);
-    Color color_button2 = Color.fromARGB(255, 4, 33, 49);
+    // Color color_button1 = Color.fromARGB(255, 70, 160, 30);
+    // Color color_button2 = Color.fromARGB(255, 4, 33, 49);
     Color color_lowStock = Colors.red[300]!;
 
     // Imágenes y rutas
