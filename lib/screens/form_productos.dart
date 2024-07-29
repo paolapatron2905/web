@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:inventario/constants/custom_appbar.dart';
-// import 'package:inventario/constants/custom_drawer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:get/get.dart';
 
@@ -12,14 +11,14 @@ class Productos extends StatefulWidget {
 }
 
 class _ProductosState extends State<Productos> {
-  final form_key = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   final supabase = Supabase.instance.client;
 
-  final nomprod_Controller = TextEditingController();
-  final descripcion_Controller = TextEditingController();
-  final precio_Controller = TextEditingController();
-  final stock_Controller = TextEditingController();
-  final stockminimo_Controller = TextEditingController();
+  final nomprodController = TextEditingController();
+  final descripcionController = TextEditingController();
+  final precioController = TextEditingController();
+  final stockController = TextEditingController();
+  final stockminimoController = TextEditingController();
   List tiposUnidades = [];
   var idUnidad;
   List tiposCategorias = [];
@@ -29,9 +28,6 @@ class _ProductosState extends State<Productos> {
   traerUnidad() async {
     try {
       tiposUnidades = await supabase.from('unidad').select();
-      print('----------------------');
-      print(tiposUnidades);
-
       setState(() {});
     } catch (e) {
       print(e);
@@ -43,9 +39,6 @@ class _ProductosState extends State<Productos> {
   traerCategoria() async {
     try {
       tiposCategorias = await supabase.from('categoria').select();
-      print('----------------------');
-      print(tiposCategorias);
-
       setState(() {});
     } catch (e) {
       print(e);
@@ -57,7 +50,6 @@ class _ProductosState extends State<Productos> {
   @override
   void initState() {
     super.initState();
-    print('-----------------');
     traerUnidad();
     traerCategoria();
   }
@@ -65,12 +57,12 @@ class _ProductosState extends State<Productos> {
   guardarProducto() async {
     try {
       await supabase.from('producto').insert({
-        'nom_prod': nomprod_Controller.text,
-        'precio': precio_Controller.text,
-        'stock': stock_Controller.text,
+        'nom_prod': nomprodController.text,
+        'precio': precioController.text,
+        'stock': stockController.text,
         'estatus': 'Disponible',
-        'stock_minimo': stockminimo_Controller.text,
-        'descripcion': descripcion_Controller.text,
+        'stock_minimo': stockminimoController.text,
+        'descripcion': descripcionController.text,
         'unidad_id': idUnidad,
         'categoria_id': idCategoria
       });
@@ -93,19 +85,16 @@ class _ProductosState extends State<Productos> {
         titulo: 'Formulario de Productos',
         colorNew: Colors.green,
       ),
-      //drawer: Custom_Drawer(),
-      body: Padding(
+      // drawer: Custom_Drawer(),
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
-          key: form_key,
+          key: formKey,
           child: Column(
             children: [
-              TextFormField(
-                controller: nomprod_Controller,
-                decoration: InputDecoration(
-                  labelText: 'Producto',
-                  border: OutlineInputBorder(),
-                ),
+              buildTextFormField(
+                controller: nomprodController,
+                labelText: 'Producto',
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Ingresa el nombre del producto';
@@ -114,12 +103,9 @@ class _ProductosState extends State<Productos> {
                 },
               ),
               SizedBox(height: 16.0),
-              TextFormField(
-                controller: descripcion_Controller,
-                decoration: InputDecoration(
-                  labelText: 'Descripcion',
-                  border: OutlineInputBorder(),
-                ),
+              buildTextFormField(
+                controller: descripcionController,
+                labelText: 'Descripcion',
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Ingresa la descripción del producto';
@@ -128,12 +114,9 @@ class _ProductosState extends State<Productos> {
                 },
               ),
               SizedBox(height: 16.0),
-              TextFormField(
-                controller: precio_Controller,
-                decoration: InputDecoration(
-                  labelText: 'Precio',
-                  border: OutlineInputBorder(),
-                ),
+              buildTextFormField(
+                controller: precioController,
+                labelText: 'Precio',
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -143,12 +126,9 @@ class _ProductosState extends State<Productos> {
                 },
               ),
               SizedBox(height: 16.0),
-              TextFormField(
-                controller: stock_Controller,
-                decoration: InputDecoration(
-                  labelText: 'Stock',
-                  border: OutlineInputBorder(),
-                ),
+              buildTextFormField(
+                controller: stockController,
+                labelText: 'Stock',
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -158,60 +138,33 @@ class _ProductosState extends State<Productos> {
                 },
               ),
               SizedBox(height: 16.0),
-              DropdownButtonFormField(
-                decoration: InputDecoration(
-                  labelText: 'Unidad',
-                  border: OutlineInputBorder(),
-                ),
-                hint: Text('Selecciona una unidad'),
-                icon: Icon(Icons.arrow_drop_down),
-                isExpanded: true,
-                menuMaxHeight: 500,
+              buildDropdownButtonFormField(
+                labelText: 'Unidad',
                 value: idUnidad,
-                items: tiposUnidades
-                    .map((e) => DropdownMenuItem(
-                          value: e['id'],
-                          child: Text(e['nom_unidad']),
-                        ))
-                    .toList(),
+                items: tiposUnidades,
+                hint: 'Selecciona una unidad',
                 onChanged: (value) {
-                  print(value);
                   setState(() {
                     idUnidad = value;
                   });
                 },
               ),
               SizedBox(height: 16.0),
-              DropdownButtonFormField(
-                decoration: InputDecoration(
-                  labelText: 'Categoría',
-                  border: OutlineInputBorder(),
-                ),
-                hint: Text('Selecciona una categoria'),
-                icon: Icon(Icons.arrow_drop_down),
-                isExpanded: true,
-                menuMaxHeight: 500,
+              buildDropdownButtonFormField(
+                labelText: 'Categoría',
                 value: idCategoria,
-                items: tiposCategorias
-                    .map((e) => DropdownMenuItem(
-                          value: e['id'],
-                          child: Text(e['nom_cat']),
-                        ))
-                    .toList(),
+                items: tiposCategorias,
+                hint: 'Selecciona una categoria',
                 onChanged: (value) {
-                  print(value);
                   setState(() {
                     idCategoria = value;
                   });
                 },
               ),
               SizedBox(height: 16.0),
-              TextFormField(
-                controller: stockminimo_Controller,
-                decoration: InputDecoration(
-                  labelText: 'Stock Minimo',
-                  border: OutlineInputBorder(),
-                ),
+              buildTextFormField(
+                controller: stockminimoController,
+                labelText: 'Stock Minimo',
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -225,23 +178,73 @@ class _ProductosState extends State<Productos> {
                 onPressed: guardando
                     ? null
                     : () {
-                        if (form_key.currentState!.validate()) {
-                          print('Guardado');
+                        if (formKey.currentState!.validate()) {
                           setState(() {
                             guardando = true;
                           });
                           guardarProducto();
-                        } else {
-                          print(
-                              'No se ha podido guardar el registro del producto');
                         }
                       },
-                child: Text(guardando ? 'Guardando' : 'Guardar'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green, // Button color
+                  foregroundColor: Colors.white, // Text color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                child: Text(
+                  guardando ? 'Guardando...' : 'Guardar',
+                  style: TextStyle(fontSize: 16.0),
+                ),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildTextFormField({
+    required TextEditingController controller,
+    required String labelText,
+    TextInputType keyboardType = TextInputType.text,
+    String? Function(String?)? validator,
+  }) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: labelText,
+        border: OutlineInputBorder(),
+      ),
+      keyboardType: keyboardType,
+      validator: validator,
+    );
+  }
+
+  Widget buildDropdownButtonFormField({
+    required String labelText,
+    required dynamic value,
+    required List items,
+    required String hint,
+    required void Function(dynamic) onChanged,
+  }) {
+    return DropdownButtonFormField(
+      decoration: InputDecoration(
+        labelText: labelText,
+        border: OutlineInputBorder(),
+      ),
+      value: value,
+      items: items
+          .map((e) => DropdownMenuItem(
+                value: e['id'],
+                child: Text(e['nom_unidad'] ?? e['nom_cat']),
+              ))
+          .toList(),
+      hint: Text(hint),
+      onChanged: onChanged,
+      isExpanded: true,
+      icon: Icon(Icons.arrow_drop_down),
+      menuMaxHeight: 500,
     );
   }
 }

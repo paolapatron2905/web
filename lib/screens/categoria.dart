@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:inventario/constants/custom_drawer.dart';
 import 'package:inventario/constants/custom_appbar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-//import 'package:inventario/models/usuario.dart'; // Importar la clase Usuario
 import 'package:get/get.dart';
 
 class InsertarCategoria extends StatefulWidget {
@@ -13,14 +11,12 @@ class InsertarCategoria extends StatefulWidget {
 }
 
 class _InsertarCategoriaState extends State<InsertarCategoria> {
-  //final args = Get.arguments as Map<String, dynamic>;
-  //final usuario = Get.arguments as Usuario;
   final formulario_key = GlobalKey<FormState>();
   final nombre_controller = TextEditingController();
   final supabase = Supabase.instance.client;
   bool guardando = false;
 
-  guardar() async {
+  Future<void> guardar() async {
     setState(() {
       guardando = true;
     });
@@ -43,37 +39,63 @@ class _InsertarCategoriaState extends State<InsertarCategoria> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar:
-            Custom_Appbar(titulo: 'Nueva Categoría', colorNew: Colors.green),
-        //drawer: Custom_Drawer(usuario: usuario),
-        body: Form(
-            key: formulario_key,
-            child: Column(
-              children: [
-                TextFormField(
-                  controller: nombre_controller,
-                  decoration:
-                      InputDecoration(hintText: 'Ingresa una categoría'),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Completa este campo';
-                    }
-                    return null;
-                  },
+      appBar: Custom_Appbar(
+        titulo: 'Nueva Categoría',
+        colorNew: Colors.green,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: formulario_key,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextFormField(
+                controller: nombre_controller,
+                decoration: InputDecoration(
+                  hintText: 'Ingresa una categoría',
+                  labelText: 'Nombre de la Categoría',
+                  labelStyle: TextStyle(color: Colors.green),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(color: Colors.green),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.green, width: 2.0),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
                 ),
-                ElevatedButton(
-                    onPressed: guardando
-                        ? null
-                        : () {
-                            if (formulario_key.currentState!.validate()) {
-                              guardar();
-                            } else {
-                              print('no okis');
-                            }
-                          },
-                    child: Text(guardando ? 'Guardando' : 'Guardar'))
-              ],
-            )));
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Completa este campo';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: guardando
+                    ? null
+                    : () {
+                        if (formulario_key.currentState!.validate()) {
+                          guardar();
+                        }
+                      },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green, // Button color
+                  foregroundColor: Colors.white, // Text color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                ),
+                child: Text(guardando ? 'Guardando...' : 'Guardar'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

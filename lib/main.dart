@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:inventario/constants/constant.dart';
 import 'package:inventario/screens/categoria.dart';
 import 'package:inventario/screens/detalle_categoria.dart';
+import 'package:inventario/screens/editar_proveedor.dart';
 import 'package:inventario/screens/empresa.dart';
+import 'package:inventario/screens/empresas.dart';
 import 'package:inventario/screens/form_productos.dart';
 import 'package:inventario/screens/home.dart';
 import 'package:inventario/screens/login.dart';
@@ -11,6 +13,7 @@ import 'package:inventario/screens/pedido.dart';
 import 'package:inventario/screens/producto_detalle.dart';
 import 'package:inventario/screens/producto_proveedor.dart';
 import 'package:inventario/screens/proveedor.dart';
+import 'package:inventario/screens/proveedores.dart';
 import 'package:inventario/screens/reporte.dart';
 import 'package:inventario/screens/tabla.dart';
 import 'package:inventario/screens/usuarios.dart';
@@ -52,6 +55,9 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/Reportes', page: () => Reporte()),
         GetPage(name: '/categorias', page: () => Categorias()),
         GetPage(name: '/productoDetalle', page: () => ProductoDetalle()),
+        GetPage(name: '/Proveedor', page: () => ProveedoresPage()),
+        GetPage(name: '/EditarProveedor', page: () => EditarProveedorPage()),
+        GetPage(name: '/Empresas', page: () => EmpresasPage()),
         GetPage(
           name: '/detalle_categoria/:categoryId',
           page: () => DetalleCategoria(),

@@ -48,7 +48,7 @@ class Custom_Appbar extends StatelessWidget implements PreferredSizeWidget {
       iconTheme: IconThemeData(
         color: drawerIconColor,
       ),
-      actions: [
+      /*actions: [
         PopupMenuButton<String>(
           icon: Icon(Icons.notifications, color: textColor),
           onSelected: (String value) {
@@ -79,7 +79,7 @@ class Custom_Appbar extends StatelessWidget implements PreferredSizeWidget {
             }
           },
         ),
-      ],
+      ],*/
     );
   }
 

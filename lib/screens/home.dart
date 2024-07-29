@@ -21,9 +21,7 @@ class _HomeState extends State<Home> {
 
   Future<void> _fetchProductosCercanos() async {
     try {
-      final List<dynamic> response = await supabase
-          .from('producto')
-          .select('''
+      final List<dynamic> response = await supabase.from('producto').select('''
             id,
             nom_prod,
             descripcion,
@@ -33,17 +31,54 @@ class _HomeState extends State<Home> {
             unidad (nom_unidad),
             categoria (nom_cat),
             estatus
-          ''')
-          .eq('estatus', 'Disponible')
-          .order('stock', ascending: true)
-          .limit(3);
+          ''');
+
+      List<Map<String, dynamic>> productos =
+          List<Map<String, dynamic>>.from(response);
+
+      // Filtrar productos con stock menor al stock mínimo
+      List<Map<String, dynamic>> productosPorReabastecer = productos
+          .where((producto) => producto['stock'] < producto['stock_minimo'])
+          .toList();
 
       setState(() {
-        productosCercanos = List<Map<String, dynamic>>.from(response);
+        productosCercanos = productosPorReabastecer;
       });
+
+      // Mostrar alerta si hay productos por reabastecer
+      if (productosPorReabastecer.isNotEmpty) {
+        _mostrarAlertaReabastecimiento(productosPorReabastecer);
+      }
     } catch (e) {
       print('Error al obtener productos: $e');
     }
+  }
+
+  void _mostrarAlertaReabastecimiento(List<Map<String, dynamic>> productos) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Productos por reabastecer'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: productos.map((producto) {
+              return Text(
+                '${producto['nom_prod']} (Stock: ${producto['stock']}, Mínimo: ${producto['stock_minimo']})',
+              );
+            }).toList(),
+          ),
+          actions: [
+            TextButton(
+              child: Text('Aceptar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -52,10 +87,7 @@ class _HomeState extends State<Home> {
 
     // Variables de diseño (colores)
     Color color_container = Color.fromARGB(255, 124, 213, 44);
-    // Color color_appbar = Color.fromARGB(255, 44, 111, 127);
-    // Color color_bgInputs = Colors.white;
     Color color_effects = Colors.black.withOpacity(0.5);
-    // Color color_fonts_1 = Colors.black;
     Color color_fonts_2 = Colors.white;
     Color color_button1 = Color.fromARGB(255, 70, 160, 30);
     Color color_button2 = Color.fromARGB(255, 4, 33, 49);
@@ -122,22 +154,6 @@ class _HomeState extends State<Home> {
                             subtitle: Text(
                               'Stock: ${producto['stock']} ${producto['unidad']['nom_unidad']}',
                               style: TextStyle(color: color_fonts_2),
-                            ),
-                            trailing: ElevatedButton(
-                              onPressed: () {
-                                Get.toNamed(
-                                    '/pedido/$userId/${producto['id']}');
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: color_button2,
-                              ),
-                              child: Text(
-                                'Pedido',
-                                style: TextStyle(
-                                  color: color_fonts_2,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
                             ),
                           ),
                         );

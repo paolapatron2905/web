@@ -473,13 +473,48 @@ class _EjemploState extends State<Ejemplo> {
                             scrollDirection: Axis.horizontal,
                             child: DataTable(
                               columns: const <DataColumn>[
-                                DataColumn(label: Text('Nombre')),
-                                DataColumn(label: Text('Descripción')),
-                                DataColumn(label: Text('Precio')),
-                                DataColumn(label: Text('Stock')),
-                                DataColumn(label: Text('Categoría')),
-                                DataColumn(label: Text('Estatus')),
-                                DataColumn(label: Text('Acciones')),
+                                DataColumn(
+                                  label: Text(
+                                    'Nombre',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    'Descripción',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    'Precio',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    'Stock',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    'Categoría',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    'Estatus',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    'Acciones',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
                               ],
                               rows: productosFiltrados.map((producto) {
                                 final bool isStockLow = producto['stock'] <
@@ -496,17 +531,38 @@ class _EjemploState extends State<Ejemplo> {
                                           Get.toNamed(
                                               '/productoDetalle?id=${producto['id']}');
                                         },
-                                        child: Text(producto['nom_prod']),
+                                        child: Text(
+                                          producto['nom_prod'],
+                                          style: TextStyle(color: Colors.white),
+                                        ),
                                       ),
                                     ),
-                                    DataCell(Text(producto['descripcion'])),
-                                    DataCell(Text(
-                                        '\$' + producto['precio'].toString())),
-                                    DataCell(Text(producto['stock'].toString() +
-                                        ' ' +
-                                        producto['unidad']['nom_unidad'])),
                                     DataCell(
-                                        Text(producto['categoria']['nom_cat'])),
+                                      Text(
+                                        producto['descripcion'],
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      Text(
+                                        '\$' + producto['precio'].toString(),
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      Text(
+                                        producto['stock'].toString() +
+                                            ' ' +
+                                            producto['unidad']['nom_unidad'],
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      Text(
+                                        producto['categoria']['nom_cat'],
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
                                     DataCell(
                                       Text(
                                         producto['estatus'].toString(),
@@ -514,7 +570,7 @@ class _EjemploState extends State<Ejemplo> {
                                           color: producto['estatus'] ==
                                                   'No disponible'
                                               ? Colors.red
-                                              : Colors.black,
+                                              : Colors.white,
                                         ),
                                       ),
                                     ),
@@ -549,7 +605,7 @@ class _EjemploState extends State<Ejemplo> {
                           ),
                         ),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ],

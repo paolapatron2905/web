@@ -25,12 +25,8 @@ class _ProductoProveedorState extends State<ProductoProveedor> {
   traerProducto() async {
     try {
       nomProducto = await supabase.from('producto').select();
-      print('----------------------');
-      print(nomProducto);
-
       setState(() {});
     } catch (e) {
-      print(e);
       Get.snackbar('Error', 'Hay un error al traer los datos de producto',
           backgroundColor: Colors.red, colorText: Colors.white);
     }
@@ -39,12 +35,8 @@ class _ProductoProveedorState extends State<ProductoProveedor> {
   traerProveedor() async {
     try {
       nomProveedor = await supabase.from('proveedor').select();
-      print('----------------------');
-      print(nomProveedor);
-
       setState(() {});
     } catch (e) {
-      print(e);
       Get.snackbar('Error', 'Hay un error al traer los datos del proveedor',
           backgroundColor: Colors.red, colorText: Colors.white);
     }
@@ -53,7 +45,6 @@ class _ProductoProveedorState extends State<ProductoProveedor> {
   @override
   void initState() {
     super.initState();
-    print('-----------------');
     traerProducto();
     traerProveedor();
   }
@@ -69,7 +60,6 @@ class _ProductoProveedorState extends State<ProductoProveedor> {
       Get.snackbar('Guardado',
           'El producto se ha enlazado con el proveedor y ha sido guardado');
     } catch (e) {
-      print(e);
       Get.snackbar('Error', 'No se pudo guardar',
           backgroundColor: Colors.blueGrey, colorText: Colors.white);
     } finally {
@@ -90,62 +80,32 @@ class _ProductoProveedorState extends State<ProductoProveedor> {
         child: Form(
           key: form_key,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              InputDecorator(
-                decoration: InputDecoration(
-                  labelText: 'Producto',
-                  border: OutlineInputBorder(),
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                    hint: Text(
-                        'Selecciona el producto que se enlazará al proveedor'),
-                    icon: Icon(Icons.arrow_drop_down),
-                    isExpanded: true,
-                    menuMaxHeight: 500,
-                    value: idProducto,
-                    items: nomProducto
-                        .map((e) => DropdownMenuItem(
-                              value: e['id'],
-                              child: Text(e['nom_prod']),
-                            ))
-                        .toList(),
-                    onChanged: (value) {
-                      print(value);
-                      setState(() {
-                        idProducto = value;
-                      });
-                    },
-                  ),
-                ),
+              _buildDropdown(
+                labelText: 'Producto',
+                hint: 'Selecciona el producto que se enlazará al proveedor',
+                value: idProducto,
+                items: nomProducto,
+                itemLabel: 'nom_prod',
+                onChanged: (value) {
+                  setState(() {
+                    idProducto = value;
+                  });
+                },
               ),
               SizedBox(height: 20.0),
-              InputDecorator(
-                decoration: InputDecoration(
-                  labelText: 'Proveedor',
-                  border: OutlineInputBorder(),
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                    hint: Text('Selecciona el proveedor'),
-                    icon: Icon(Icons.arrow_drop_down),
-                    isExpanded: true,
-                    menuMaxHeight: 500,
-                    value: idProveedor,
-                    items: nomProveedor
-                        .map((e) => DropdownMenuItem(
-                              value: e['id'],
-                              child: Text(e['nom_proveedor']),
-                            ))
-                        .toList(),
-                    onChanged: (value) {
-                      print(value);
-                      setState(() {
-                        idProveedor = value;
-                      });
-                    },
-                  ),
-                ),
+              _buildDropdown(
+                labelText: 'Proveedor',
+                hint: 'Selecciona el proveedor',
+                value: idProveedor,
+                items: nomProveedor,
+                itemLabel: 'nom_proveedor',
+                onChanged: (value) {
+                  setState(() {
+                    idProveedor = value;
+                  });
+                },
               ),
               SizedBox(height: 20),
               ElevatedButton(
@@ -153,19 +113,72 @@ class _ProductoProveedorState extends State<ProductoProveedor> {
                     ? null
                     : () {
                         if (form_key.currentState!.validate()) {
-                          print('Guardado');
                           setState(() {
                             guardando = true;
                           });
                           guardarProducto();
                         } else {
-                          print('No se ha podido guardar el registro');
+                          Get.snackbar(
+                              'Error', 'No se ha podido guardar el registro',
+                              backgroundColor: Colors.orange,
+                              colorText: Colors.white);
                         }
                       },
-                child: Text(guardando ? 'Guardando' : 'Guardar'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green, // Button color
+                  foregroundColor: Colors.white, // Text color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                ),
+                child: Text(guardando ? 'Guardando...' : 'Guardar'),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDropdown({
+    required String labelText,
+    required String hint,
+    required dynamic value,
+    required List<dynamic> items,
+    required String itemLabel,
+    required ValueChanged<dynamic> onChanged,
+  }) {
+    return InputDecorator(
+      decoration: InputDecoration(
+        labelText: labelText,
+        hintText: hint,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.green, width: 2.0),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey, width: 1.0),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton(
+          hint: Text(hint),
+          icon: Icon(Icons.arrow_drop_down),
+          isExpanded: true,
+          menuMaxHeight: 500,
+          value: value,
+          items: items
+              .map((e) => DropdownMenuItem(
+                    value: e['id'],
+                    child: Text(e[itemLabel]),
+                  ))
+              .toList(),
+          onChanged: onChanged,
         ),
       ),
     );

@@ -75,7 +75,7 @@ class Custom_Drawer extends StatelessWidget {
                 style: TextStyle(color: color_fonts_2),
               ),
               onTap: () {
-                Get.toNamed('/NuevoProveedor');
+                Get.toNamed('/Proveedor');
               },
             ),
 
@@ -91,7 +91,7 @@ class Custom_Drawer extends StatelessWidget {
                 style: TextStyle(color: color_fonts_2),
               ),
               onTap: () {
-                Get.toNamed('/NuevaEmpresa');
+                Get.toNamed('/Empresas');
               },
             ),
 

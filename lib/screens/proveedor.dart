@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:inventario/constants/custom_appbar.dart';
 
 class InsertarProveedor extends StatefulWidget {
   const InsertarProveedor({super.key});
@@ -10,6 +11,8 @@ class InsertarProveedor extends StatefulWidget {
 }
 
 class _InsertarProveedorState extends State<InsertarProveedor> {
+  Color color_container = Color.fromARGB(255, 124, 213, 44);
+  Color color_fonts_2 = Colors.white;
   bool guardando = false;
   bool cargandoEmpresa = true;
   bool cargandoCiudad = false;
@@ -159,99 +162,61 @@ class _InsertarProveedorState extends State<InsertarProveedor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Nuevo Proveedor'),
-        backgroundColor: Colors.green,
+      appBar: Custom_Appbar(
+        titulo: 'Nuevo Proveedor',
+        colorNew: color_container,
+        textColor: color_fonts_2,
       ),
       body: cargandoEmpresa || cargandoEstado
           ? Center(child: CircularProgressIndicator())
-          : Form(
-              key: formularioKey,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
+          : Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                key: formularioKey,
+                child: ListView(
                   children: [
-                    TextFormField(
+                    _buildTextFormField(
                       controller: nombreController,
-                      decoration: InputDecoration(
-                          hintText: 'Ingresa el nombre del proveedor'),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Completa este campo';
-                        }
-                        return null;
-                      },
+                      labelText: 'Nombre del Proveedor',
+                      hintText: 'Ingresa el nombre del proveedor',
                     ),
-                    TextFormField(
+                    SizedBox(height: 16),
+                    _buildTextFormField(
                       controller: telefonoController,
-                      decoration: InputDecoration(
-                          hintText: 'Ingresa el telefono del proveedor'),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Completa este campo';
-                        }
-                        return null;
-                      },
+                      labelText: 'Teléfono',
+                      hintText: 'Ingresa el teléfono del proveedor',
+                      keyboardType: TextInputType.phone,
                     ),
-                    TextFormField(
+                    SizedBox(height: 16),
+                    _buildTextFormField(
                       controller: correoController,
-                      decoration: InputDecoration(
-                          hintText: 'Ingresa el correo del proveedor'),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Completa este campo';
-                        }
-                        return null;
-                      },
+                      labelText: 'Correo',
+                      hintText: 'Ingresa el correo del proveedor',
+                      keyboardType: TextInputType.emailAddress,
                     ),
-                    TextFormField(
+                    SizedBox(height: 16),
+                    _buildTextFormField(
                       controller: direccionController,
-                      decoration: InputDecoration(
-                          hintText: 'Ingresa la dirección del proveedor'),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Completa este campo';
-                        }
-                        return null;
-                      },
+                      labelText: 'Dirección',
+                      hintText: 'Ingresa la dirección del proveedor',
                     ),
-                    DropdownButtonFormField<int>(
+                    SizedBox(height: 16),
+                    _buildDropdown(
                       value: empresaSeleccionada,
-                      decoration:
-                          InputDecoration(hintText: 'Selecciona una empresa'),
-                      items: Empresa.map((tipo) {
-                        return DropdownMenuItem<int>(
-                          value: tipo['id'],
-                          child: Text(tipo['nom_empresa']),
-                        );
-                      }).toList(),
+                      items: Empresa,
+                      hint: 'Selecciona una empresa',
                       onChanged: (value) {
                         setState(() {
                           empresaSeleccionada = value;
                         });
                       },
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Selecciona una empresa';
-                        }
-                        return null;
-                      },
+                      itemLabel: 'nom_empresa',
                     ),
-                    SizedBox(height: 20),
-                    DropdownButtonFormField<int>(
+                    SizedBox(height: 16),
+                    _buildDropdown(
                       value: estadoSeleccionado,
-                      decoration:
-                          InputDecoration(hintText: 'Selecciona un estado'),
-                      items: Estado.map((estado) {
-                        return DropdownMenuItem<int>(
-                          value: estado['id'],
-                          child: Text(estado['nom_estado']),
-                        );
-                      }).toList(),
+                      items: Estado,
+                      hint: 'Selecciona un estado',
                       onChanged: (value) {
                         setState(() {
                           estadoSeleccionado = value;
@@ -262,35 +227,19 @@ class _InsertarProveedorState extends State<InsertarProveedor> {
                           }
                         });
                       },
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Selecciona un estado';
-                        }
-                        return null;
-                      },
+                      itemLabel: 'nom_estado',
                     ),
-                    SizedBox(height: 20),
-                    DropdownButtonFormField<int>(
+                    SizedBox(height: 16),
+                    _buildDropdown(
                       value: ciudadSeleccionada,
-                      decoration:
-                          InputDecoration(hintText: 'Selecciona una ciudad'),
-                      items: Ciudad.map((ciudad) {
-                        return DropdownMenuItem<int>(
-                          value: ciudad['id'],
-                          child: Text(ciudad['nom_ciudad']),
-                        );
-                      }).toList(),
+                      items: Ciudad,
+                      hint: 'Selecciona una ciudad',
                       onChanged: (value) {
                         setState(() {
                           ciudadSeleccionada = value;
                         });
                       },
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Selecciona una ciudad';
-                        }
-                        return null;
-                      },
+                      itemLabel: 'nom_ciudad',
                     ),
                     SizedBox(height: 20),
                     ElevatedButton(
@@ -301,12 +250,93 @@ class _InsertarProveedorState extends State<InsertarProveedor> {
                                 guardarProveedor();
                               }
                             },
-                      child: Text(guardando ? 'Guardando' : 'Guardar'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green, // Button color
+                        foregroundColor: Colors.white, // Text color
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        padding: EdgeInsets.symmetric(vertical: 16.0),
+                      ),
+                      child: Text(guardando ? 'Guardando...' : 'Guardar'),
                     ),
                   ],
                 ),
               ),
             ),
+    );
+  }
+
+  Widget _buildTextFormField({
+    required TextEditingController controller,
+    required String labelText,
+    required String hintText,
+    TextInputType keyboardType = TextInputType.text,
+  }) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: keyboardType,
+      decoration: InputDecoration(
+        labelText: labelText,
+        hintText: hintText,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.green, width: 2.0),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey, width: 1.0),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Completa este campo';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _buildDropdown({
+    required int? value,
+    required List<Map<String, dynamic>> items,
+    required String hint,
+    required ValueChanged<int?> onChanged,
+    required String itemLabel,
+  }) {
+    return DropdownButtonFormField<int>(
+      value: value,
+      decoration: InputDecoration(
+        hintText: hint,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.green, width: 2.0),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey, width: 1.0),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+      items: items.map((item) {
+        return DropdownMenuItem<int>(
+          value: item['id'],
+          child: Text(item[itemLabel]),
+        );
+      }).toList(),
+      onChanged: onChanged,
+      validator: (value) {
+        if (value == null) {
+          return 'Selecciona una opción';
+        }
+        return null;
+      },
     );
   }
 }

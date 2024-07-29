@@ -182,14 +182,14 @@ class _ReporteState extends State<Reporte> {
         return BarChartGroupData(
           x: data.indexOf(item),
           barRods: [
-            BarChartRodData(y: item[field].toDouble(), colors: [Colors.blue])
+            BarChartRodData(y: item[field].toDouble(), colors: [Colors.green])
           ],
         );
       }).toList(),
       titlesData: FlTitlesData(
         leftTitles: SideTitles(
           showTitles: true,
-          interval: 30,
+          interval: 20,
         ),
         bottomTitles: SideTitles(
           showTitles: true,
@@ -260,7 +260,7 @@ class _ReporteState extends State<Reporte> {
           }).toList(),
           isCurved: true,
           colors: [Colors.green],
-          barWidth: 4,
+          barWidth: 10,
           belowBarData: BarAreaData(
             show: true,
             colors: [Colors.green.withOpacity(0.3)],
