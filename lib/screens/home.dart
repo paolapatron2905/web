@@ -91,6 +91,7 @@ class _HomeState extends State<Home> {
     Color color_fonts_2 = Colors.white;
     Color color_button1 = Color.fromARGB(255, 70, 160, 30);
     Color color_button2 = Color.fromARGB(255, 4, 33, 49);
+    Color color_lowStock = Colors.red[300]!;
 
     // Imágenes y rutas
     final String bg_img = '../assets/img/bg.jpg';
@@ -130,7 +131,7 @@ class _HomeState extends State<Home> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Próximos a terminarse',
+                  'Productos próximos a terminarse',
                   style: TextStyle(color: color_fonts_2),
                 ),
 
@@ -145,7 +146,7 @@ class _HomeState extends State<Home> {
                       itemBuilder: (context, index) {
                         final producto = productosCercanos[index];
                         return Card(
-                          color: color_container,
+                          color: color_lowStock,
                           child: ListTile(
                             title: Text(
                               producto['nom_prod'],
