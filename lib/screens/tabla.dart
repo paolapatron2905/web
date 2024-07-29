@@ -21,6 +21,9 @@ class _EjemploState extends State<Ejemplo> {
   Color color_effects = Colors.black.withOpacity(0.5);
   // Color color_fonts_1 = Colors.black;
   Color color_fonts_2 = Colors.white;
+  Color color_sliderInactive = Colors.grey;
+  Color color_sliderOverlay = Color.fromARGB(32, 33, 150, 243);
+  Color color_dropdown = Color.fromARGB(220, 124, 213, 44);
   Color color_button1 = Color.fromARGB(255, 70, 160, 30);
   Color color_button2 = Color.fromARGB(255, 4, 33, 49);
 
@@ -308,7 +311,7 @@ class _EjemploState extends State<Ejemplo> {
                   children: [
                     // Filtro por nombre o descripcion
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(50.0),
                       child: TextField(
                         decoration: InputDecoration(
                           labelText: 'Buscar por nombre o descripción',
@@ -335,7 +338,7 @@ class _EjemploState extends State<Ejemplo> {
 
                     // Contenedor de Inputs 1
                     Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: EdgeInsets.all(16.0),
                       child: Row(
                         children: [
                           Expanded(
@@ -354,23 +357,51 @@ class _EjemploState extends State<Ejemplo> {
 
                                     // Slider ajustable
                                     Expanded(
-                                      child: RangeSlider(
-                                        values: RangeValues(
-                                          precioActualMin,
-                                          precioActualMax,
+                                      child: SliderTheme(
+                                        data: SliderTheme.of(context).copyWith(
+                                          activeTrackColor:
+                                              color_sliderOverlay, // Color de la parte activa de la pista
+                                          inactiveTrackColor:
+                                              color_sliderInactive, // Color de la parte inactiva de la pista
+                                          trackHeight:
+                                              4.0, // Altura de la pista
+                                          thumbColor:
+                                              color_button1, // Color de los puntos
+                                          overlayColor:
+                                              color_sliderOverlay, // Color del overlay
+                                          thumbShape: RoundSliderThumbShape(
+                                            enabledThumbRadius:
+                                                12.0, // Forma de los puntos
+                                          ),
+                                          overlayShape: RoundSliderOverlayShape(
+                                            overlayRadius:
+                                                24.0, // Forma del overlay
+                                          ),
+                                          tickMarkShape:
+                                              RoundSliderTickMarkShape(), // Forma de los divisores
+                                          activeTickMarkColor: Colors
+                                              .blue, // Color de los divisores activos
+                                          inactiveTickMarkColor: Colors
+                                              .grey, // Color de los divisores inactivos
                                         ),
-                                        min: precioMin,
-                                        max: precioMax,
-                                        onChanged: (RangeValues values) {
-                                          setState(
-                                            () {
-                                              precioActualMin = values.start;
-                                              precioActualMax = values.end;
-                                              _filtrarProductos();
-                                            },
-                                          );
-                                        },
-                                        divisions: 10,
+                                        child: RangeSlider(
+                                          values: RangeValues(
+                                            precioActualMin,
+                                            precioActualMax,
+                                          ),
+                                          min: precioMin,
+                                          max: precioMax,
+                                          onChanged: (RangeValues values) {
+                                            setState(
+                                              () {
+                                                precioActualMin = values.start;
+                                                precioActualMax = values.end;
+                                                _filtrarProductos();
+                                              },
+                                            );
+                                          },
+                                          divisions: 10,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -386,19 +417,52 @@ class _EjemploState extends State<Ejemplo> {
                                         color: color_fonts_2,
                                       ),
                                     ),
+
+                                    // Slider ajustable
                                     Expanded(
-                                      child: RangeSlider(
-                                        values: RangeValues(
-                                            stockActualMin, stockActualMax),
-                                        min: stockMin,
-                                        max: stockMax,
-                                        onChanged: (RangeValues values) {
-                                          setState(() {
-                                            stockActualMin = values.start;
-                                            stockActualMax = values.end;
-                                            _filtrarProductos();
-                                          });
-                                        },
+                                      child: SliderTheme(
+                                        data: SliderTheme.of(context).copyWith(
+                                          activeTrackColor:
+                                              color_sliderOverlay, // Color de la parte activa de la pista
+                                          inactiveTrackColor:
+                                              color_sliderInactive, // Color de la parte inactiva de la pista
+                                          trackHeight:
+                                              4.0, // Altura de la pista
+                                          thumbColor:
+                                              color_button1, // Color de los puntos
+                                          overlayColor:
+                                              color_sliderOverlay, // Color del overlay
+                                          thumbShape: RoundSliderThumbShape(
+                                            enabledThumbRadius:
+                                                12.0, // Forma de los puntos
+                                          ),
+                                          overlayShape: RoundSliderOverlayShape(
+                                            overlayRadius:
+                                                24.0, // Forma del overlay
+                                          ),
+                                          tickMarkShape:
+                                              RoundSliderTickMarkShape(), // Forma de los divisores
+                                          activeTickMarkColor: Colors
+                                              .blue, // Color de los divisores activos
+                                          inactiveTickMarkColor: Colors
+                                              .grey, // Color de los divisores inactivos
+                                        ),
+                                        child: RangeSlider(
+                                          values: RangeValues(
+                                              stockActualMin, stockActualMax),
+                                          min: stockMin,
+                                          max: stockMax,
+                                          onChanged: (RangeValues values) {
+                                            setState(
+                                              () {
+                                                stockActualMin = values.start;
+                                                stockActualMax = values.end;
+                                                _filtrarProductos();
+                                              },
+                                            );
+                                          },
+                                          divisions: 10,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -416,8 +480,19 @@ class _EjemploState extends State<Ejemplo> {
                         // Input Seleccionador 1 (Categoria)
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: DropdownButton<String>(
+                            padding: EdgeInsets.all(12.0),
+                            child: DropdownButtonFormField<String>(
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: color_sliderOverlay,
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 4.0,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
                               value: categoriaSeleccionada,
                               items: [
                                 'Todas',
@@ -435,6 +510,12 @@ class _EjemploState extends State<Ejemplo> {
                                 });
                               },
                               hint: Text('Seleccionar categoría'),
+                              dropdownColor:
+                                  color_dropdown, // Color del menú desplegable
+                              style: TextStyle(
+                                color: color_fonts_2, // Color del texto
+                                fontSize: 16, // Tamaño del texto
+                              ),
                             ),
                           ),
                         ),
@@ -443,7 +524,18 @@ class _EjemploState extends State<Ejemplo> {
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: DropdownButton<String>(
+                            child: DropdownButtonFormField<String>(
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: color_sliderOverlay,
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 4.0,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
                               value: estatusSeleccionado,
                               items: ['Todas', 'Disponible', 'No disponible']
                                   .map((estatus) {
@@ -459,6 +551,12 @@ class _EjemploState extends State<Ejemplo> {
                                 });
                               },
                               hint: Text('Seleccionar estatus'),
+                              dropdownColor:
+                                  color_dropdown, // Color del menú desplegable
+                              style: TextStyle(
+                                color: color_fonts_2, // Color del texto
+                                fontSize: 16, // Tamaño del texto
+                              ),
                             ),
                           ),
                         ),
@@ -472,43 +570,57 @@ class _EjemploState extends State<Ejemplo> {
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: DataTable(
+                              // Encabezados de la tabla
                               columns: const <DataColumn>[
+                                // Nombre producto
                                 DataColumn(
                                   label: Text(
                                     'Nombre',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
+
+                                // Descripcion producto
                                 DataColumn(
                                   label: Text(
                                     'Descripción',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
+
+                                // Precio producto
                                 DataColumn(
                                   label: Text(
                                     'Precio',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
+
+                                // Stock producto
                                 DataColumn(
                                   label: Text(
                                     'Stock',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
+
+                                // Categoria producto
                                 DataColumn(
                                   label: Text(
                                     'Categoría',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
+
+                                // Estatus producto
                                 DataColumn(
                                   label: Text(
                                     'Estatus',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
+
+                                // Boton Acciones
                                 DataColumn(
                                   label: Text(
                                     'Acciones',
@@ -516,13 +628,15 @@ class _EjemploState extends State<Ejemplo> {
                                   ),
                                 ),
                               ],
+
+                              // Filas de la tabla
                               rows: productosFiltrados.map((producto) {
                                 final bool isStockLow = producto['stock'] <
                                     producto['stock_minimo'];
                                 return DataRow(
                                   color: isStockLow
                                       ? MaterialStateProperty.all<Color>(
-                                          Colors.red[100]!)
+                                          Colors.red[300]!)
                                       : null,
                                   cells: <DataCell>[
                                     DataCell(
@@ -531,49 +645,98 @@ class _EjemploState extends State<Ejemplo> {
                                           Get.toNamed(
                                               '/productoDetalle?id=${producto['id']}');
                                         },
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 8.0,
+                                            horizontal: 4.0,
+                                          ),
+                                          child: Text(
+                                            producto['nom_prod'],
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                    // Descripcion Info producto
+                                    DataCell(
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 8.0,
+                                          horizontal: 4.0,
+                                        ),
                                         child: Text(
-                                          producto['nom_prod'],
+                                          producto['descripcion'],
                                           style: TextStyle(color: Colors.white),
                                         ),
                                       ),
                                     ),
+
+                                    // Precio Info producto
                                     DataCell(
-                                      Text(
-                                        producto['descripcion'],
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                    DataCell(
-                                      Text(
-                                        '\$' + producto['precio'].toString(),
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                    DataCell(
-                                      Text(
-                                        producto['stock'].toString() +
-                                            ' ' +
-                                            producto['unidad']['nom_unidad'],
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                    DataCell(
-                                      Text(
-                                        producto['categoria']['nom_cat'],
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                    DataCell(
-                                      Text(
-                                        producto['estatus'].toString(),
-                                        style: TextStyle(
-                                          color: producto['estatus'] ==
-                                                  'No disponible'
-                                              ? Colors.red
-                                              : Colors.white,
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 8.0,
+                                          horizontal: 4.0,
+                                        ),
+                                        child: Text(
+                                          '\$' + producto['precio'].toString(),
+                                          style: TextStyle(color: Colors.white),
                                         ),
                                       ),
                                     ),
+
+                                    // Stock Info producto
+                                    DataCell(
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 8.0,
+                                          horizontal: 4.0,
+                                        ),
+                                        child: Text(
+                                          producto['stock'].toString() +
+                                              ' ' +
+                                              producto['unidad']['nom_unidad'],
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+
+                                    // Categoria Info producto
+                                    DataCell(
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 8.0,
+                                          horizontal: 4.0,
+                                        ),
+                                        child: Text(
+                                          producto['categoria']['nom_cat'],
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+
+                                    // Estatus Info producto
+                                    DataCell(
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 8.0,
+                                          horizontal: 4.0,
+                                        ),
+                                        child: Text(
+                                          producto['estatus'].toString(),
+                                          style: TextStyle(
+                                            color: producto['estatus'] ==
+                                                    'No disponible'
+                                                ? Colors.red
+                                                : Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                    // Botón acciones Info producto
                                     DataCell(
                                       PopupMenuButton<String>(
                                         onSelected: (String result) {
@@ -601,6 +764,22 @@ class _EjemploState extends State<Ejemplo> {
                                   ],
                                 );
                               }).toList(),
+
+                              // Diseño de la tabla
+                              headingRowColor: MaterialStateColor.resolveWith(
+                                (states) => color_container,
+                              ),
+                              dataRowColor: MaterialStateColor.resolveWith(
+                                  (states) => color_sliderOverlay),
+                              border: TableBorder(
+                                horizontalInside: BorderSide(
+                                  width: 1,
+                                  color: Colors.grey[700]!,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              columnSpacing: 16.0,
+                              horizontalMargin: 16.0,
                             ),
                           ),
                         ),
@@ -618,7 +797,7 @@ class _EjemploState extends State<Ejemplo> {
         },
         label: Text('Registrar producto'),
         icon: Icon(Icons.add),
-        backgroundColor: Colors.green,
+        backgroundColor: color_container,
       ),
     );
   }
