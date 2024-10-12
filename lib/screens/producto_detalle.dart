@@ -263,7 +263,7 @@ class _ProductoDetalleState extends State<ProductoDetalle> {
                         'Movimientos',
                         style: Theme.of(context)
                             .textTheme
-                            .headline6
+                            .titleLarge
                             ?.copyWith(color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
@@ -372,7 +372,7 @@ class _ProductoDetalleState extends State<ProductoDetalle> {
                 title,
                 style: Theme.of(context)
                     .textTheme
-                    .subtitle1
+                    .titleMedium
                     ?.copyWith(color: Colors.white),
                 textAlign: TextAlign.center,
               ),
@@ -400,7 +400,7 @@ class _ProductoDetalleState extends State<ProductoDetalle> {
                 rows: data.map((entry) {
                   final fecha = DateTime.parse(entry['created_at']);
                   return DataRow(
-                    color: MaterialStateProperty.all(Colors.black
+                    color: WidgetStateProperty.all(Colors.black
                         .withOpacity(0.5)), // Fondo oscuro para las filas
                     cells: [
                       DataCell(Text(entry['cantidad'].toString(),

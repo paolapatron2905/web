@@ -635,7 +635,7 @@ class _EjemploState extends State<Ejemplo> {
                                     producto['stock_minimo'];
                                 return DataRow(
                                   color: isStockLow
-                                      ? MaterialStateProperty.all<Color>(
+                                      ? WidgetStateProperty.all<Color>(
                                           Colors.red[300]!)
                                       : null,
                                   cells: <DataCell>[
@@ -766,10 +766,10 @@ class _EjemploState extends State<Ejemplo> {
                               }).toList(),
 
                               // Diseño de la tabla
-                              headingRowColor: MaterialStateColor.resolveWith(
+                              headingRowColor: WidgetStateColor.resolveWith(
                                 (states) => color_container,
                               ),
-                              dataRowColor: MaterialStateColor.resolveWith(
+                              dataRowColor: WidgetStateColor.resolveWith(
                                   (states) => color_sliderOverlay),
                               border: TableBorder(
                                 horizontalInside: BorderSide(
