@@ -29,14 +29,12 @@ class _EmpresasPageState extends State<EmpresasPage> {
     try {
       final response = await supabase.from('empresa').select();
 
-      if (response != null) {
-        Get.snackbar('Error', 'No se pudo cargar la lista de empresas',
-            backgroundColor: Colors.red, colorText: Colors.white);
-        return;
-      }
-
+      Get.snackbar('Error', 'No se pudo cargar la lista de empresas',
+          backgroundColor: Colors.red, colorText: Colors.white);
+      return;
+    
       setState(() {
-        empresas = response as List<Map<String, dynamic>>;
+        empresas = response;
       });
     } catch (e) {
       Get.snackbar('Error', 'Hubo un error al cargar las empresas',
